@@ -30,6 +30,9 @@ Node * Edge::getNeighbor(Node *n)
 	return 0;	
 }
 
+Node::gref = 0;
+Node::gref2 = 0;
+
 Node::Node(const int i, int* c)
 {
    id = i;
@@ -38,6 +41,9 @@ Node::Node(const int i, int* c)
    y1 = c[1];
    x2 = c[2];
    y2 = c[3];
+   ref = gref;
+   ref2 = gref2;
+   group = 0;
 }
 
 void Node::addEdge(Edge *e)
@@ -54,6 +60,36 @@ bool edgeComp( const Edge* A, const Edge* B ){
 void Node::sortEdge()
 {
     sort(edge.begin(), edge.end(), edgeComp);
+}
+
+bool Node::isGref()
+{
+    return (ref == gref);
+}
+
+void Node::setToGref()
+{
+    ref = gref;
+}
+
+void Node::setGref()
+{
+    gref++;
+}
+
+bool Node::isGref2()
+{
+    return (ref2 == gref2);
+}
+
+void Node::setToGref2()
+{
+    ref2 = gref2;
+}
+
+void Node::setGref2()
+{
+    gref2++;
 }
 
 Graph::~Graph()
@@ -165,11 +201,60 @@ void Graph::init()
 	for ( itN = nodesMap.begin() ; itN != nodesMap.end() ; itN++ )
 	{
 		Node *node = (*itN).second;
-      node->color = -1;
+                node->color = -1;
 	}
 }
 
 Node * Graph::getNodeById(const int& id)
 {
 	return nodesMap[id];
+}
+
+size_t Graph::getNumofNode()
+{
+    return nodes.size();	
+}
+
+bool Graph::coloring(Node* h, int* pos)
+{
+    if(!h->isGref())
+    {
+        h->setToGref();
+        h->color = 0;
+        pos[0] = h->x1;
+        pos[1] = h->y1;
+        pos[2] = h->x2;
+        pos[3] = h->y2;
+    }
+    
+    size_t n = h->edge.size();
+
+   for(size_t i = 0;i<n;++i)
+   {
+        Node* temp = h->edge[i]->getNeighbor(h);
+        if(!temp->isGref())
+        {
+            temp->color = ((h->color)?0:1);
+            if(temp->x1<pos[0]) pos[0] = temp->x1;
+            if(temp->y1<pos[1]) pos[1] = temp->y1;
+            if(temp->x2>pos[2]) pos[2] = temp->x2;
+            if(temp->y2>pos[3]) pos[3] = temp->y2;
+            temp->setToGref();
+            if(!coloring(temp,pos)) return false;
+        }else
+        {
+            if(temp->color==h->color) return false;
+        }
+   }
+   return true;
+}
+
+void Graph::markAll(Node* h)
+{
+	
+}
+
+void Graph::setGroup(Node* h)
+{
+	
 }
