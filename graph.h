@@ -74,7 +74,7 @@ class Graph{
 		size_t getNumofNode();
 		bool coloring(Node* h, int* pos);
 		void markAll(Node* h);
-		void setGroup(Node* h);
+		void setGroup(Node* h, Group* g);
 
 		int alpha;
 		int beta;
