@@ -45,6 +45,10 @@ class Node{
 		
 		int ref;
 		static int gref;
+		int ref2;
+		static int gref2;
+		
+		Group* group;
 };
 
 class Graph{
@@ -62,6 +66,12 @@ class Graph{
                 void addEdgesInX();                 
 		void init();
 		Node* getNodeById(const int& id);
+		
+		//use in Map::makeGroup()
+		size_t getNumofNode();
+		bool coloring(Node* h, int* pos);
+		void markAll(Node* h);
+		void setGroup(Node* h);
 
 		int alpha;
 		int beta;
