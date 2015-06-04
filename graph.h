@@ -30,15 +30,21 @@ class Node{
 		Node(const int i, int* c);
 		void addEdge(Edge *e);
 		void sortEdge();
+		
+		bool isGref();
+		void setToGref();
+		void setGref();
 
 		int id;
-      int color;
+      		int color;
 		int x1;
 		int y1;
 		int x2;
 		int y2;
 		vector<Edge *> edge;
+		
 		int ref;
+		static int gref;
 };
 
 class Graph{
@@ -49,11 +55,11 @@ class Graph{
 		
 		void addEdge(Node* v1, Node* v2);
 		void sortEdgesOfNode();
-      void sortNodesByID();
-      void sortNodesByX1(); 
-      void sortNodesByY1();  
-      void addEdgesInY();
-      void addEdgesInX();                 
+                void sortNodesByID();
+                void sortNodesByX1(); 
+                void sortNodesByY1();  
+                void addEdgesInY();
+                void addEdgesInX();                 
 		void init();
 		Node* getNodeById(const int& id);
 
@@ -61,7 +67,7 @@ class Graph{
 		int beta;
 		int omega;
 		map<int, Node *> nodesMap;
-      vector<Node *> nodes;
+                vector<Node *> nodes;
 		vector<Edge *> edges;
 };
 
