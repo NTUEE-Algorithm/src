@@ -33,10 +33,10 @@ class Node{
 
 		int id;
       int color;
-		double x1;
-		double y1;
-		double x2;
-		double y2;
+		int x1;
+		int y1;
+		int x2;
+		int y2;
 		vector<Edge *> edge;
 		int ref;
 };
@@ -57,13 +57,13 @@ class Graph{
 		void init();
 		Node* getNodeById(const int& id);
 
-		double alpha;
-		double beta;
-		double omega;
-		double x1;
-		double y1;
-		double x2;
-		double y2;
+		int alpha;
+		int beta;
+		int omega;
+		int x1;
+		int y1;
+		int x2;
+		int y2;
 		map<int, Node *> nodesMap;
       vector<Node *> nodes;
 		vector<Edge *> edges;
