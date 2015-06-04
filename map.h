@@ -40,7 +40,7 @@ class Map {
    public:
       Map(Graph* g) { graph = g;}
       ~Map();
-      
+      void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
       void makeGroup();
       
    private:
@@ -49,6 +49,6 @@ class Map {
       Window** windows;
 };
 
-void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
+
 
 #endif
