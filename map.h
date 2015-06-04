@@ -7,11 +7,14 @@ using namespace std;
 
 class Window;
 class Graph;
+class Node;
 
 class Group {
    public:
       Group(Node* h, int* pos);//do not handle anything about window
-      
+      Node* head;
+      vector<Node *> nodes;
+   
    private:
       vector<Window*> windows;
       double effect;
@@ -21,10 +24,7 @@ class Group {
       int y1;
       //right top
       int x2;
-      int y2;
-      
-      Node* head;
-      vector<Node *> nodes;
+      int y2;    
 };
 
 class Window {
@@ -46,7 +46,7 @@ class Map {
    private:
       Graph* graph;
       vector<Group*> groups;
-      Window** windows;
+      Window*** windows;
 };
 
 

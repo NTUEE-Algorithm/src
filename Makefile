@@ -12,14 +12,14 @@ clean :
 ../bin/DPT_balance_color : main.o graph.o myString.o map.o
 	$(CXX) $^ -o $@
 
-main.o : main.cpp graph.h
+main.o : main.cpp graph.h map.h
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
-graph.o : graph.cpp graph.h
+graph.o : graph.cpp graph.h map.h
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 	
 myString.o : myString.cpp
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
-map.o : map.cpp map.h
+map.o : map.cpp map.h graph.h
 	$(CXX) $(CPPFLAGS) -c $< -o $@   

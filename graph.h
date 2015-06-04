@@ -13,7 +13,7 @@
 using namespace std;
 
 class Node;
-
+class Group;
 class Edge{
 
 	public:

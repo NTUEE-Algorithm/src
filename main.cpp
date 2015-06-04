@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 #include "graph.h"
+#include "map.h"
 
 using namespace std;
 size_t myStrGetTok(const string&, string&, size_t = 0, const char = ',');
@@ -76,7 +77,9 @@ int main(int argc, char* argv[])
     
     //////////// find the solution ////
     
-
+    Map map(&graph);
+    map.makeGroup();   // make group and color
+    
 
 
     //////////// write the output file ///////////

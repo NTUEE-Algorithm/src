@@ -1,4 +1,5 @@
 #include "map.h"
+#include "graph.h"
 
 Group::Group(Node* h, int* pos)
 {
@@ -58,6 +59,7 @@ void Map::CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 ){
         win[WNAX][j] = new Window( OMEGA, xpin, ypin );
         ypin=ypin+OMEGA;
     }
+    windows = win;
 }
 
 Map::~Map()
@@ -71,17 +73,17 @@ void Map::makeGroup()
    int pos[4];
    size_t n = graph->getNumofNode();
    graph->nodes[0]->setGref();
-   graph->nodes[0]->setGref2()
+   graph->nodes[0]->setGref2();
    for(size_t i=0;i<n;++i)
    {
       Node* h = graph->nodes[i];
-      if(!h->isGref();)
+      if(!h->isGref())
       {
           if(graph->coloring(h,pos))
           {
              Group* temp = new Group(h,pos);
              groups.push_back(temp);
-             graph->setGroup(h);
+             graph->setGroup(h, temp);
           }else graph->markAll(h);
       }
    }

@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "map.h"
 #include <iostream>
 
 Edge::Edge(Node *a, Node *b)
@@ -30,8 +31,8 @@ Node * Edge::getNeighbor(Node *n)
 	return 0;	
 }
 
-Node::gref = 0;
-Node::gref2 = 0;
+int Node::gref = 0;
+int Node::gref2 = 0;
 
 Node::Node(const int i, int* c)
 {
@@ -272,6 +273,6 @@ void Graph::setGroup(Node* h,Group* g)
     for(size_t i = 0;i<n;++i)
     {
          Node* temp = h->edge[i]->getNeighbor(h);
-         if(!temp->isGref2()) setGroup(temp);
+         if(!temp->isGref2()) setGroup(temp, g);
     }	
 }
