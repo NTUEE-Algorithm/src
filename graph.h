@@ -37,7 +37,8 @@ class Node{
 		int y1;
 		int x2;
 		int y2;
-		vector<Edge *> edge;			
+		vector<Edge *> edge;
+		int ref;
 };
 
 class Graph{
