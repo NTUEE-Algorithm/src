@@ -34,6 +34,9 @@ class Node{
 		bool isGref();
 		void setToGref();
 		void setGref();
+		bool isGref2();
+		void setToGref2();
+		void setGref2();
 
 		int id;
       		int color;
