@@ -24,6 +24,7 @@ class Group {
       int y2;
       
       Node* head;
+      vector<Node *> nodes;
 };
 
 class Window {
