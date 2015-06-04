@@ -29,9 +29,9 @@ class Group {
 
 class Window {
    public:
-      Window();
-
-   private:
+      Window( int omega, int x, int y );
+      int x, y;
+      int OMEGA;
       vector<Group*> groups;
 
 };
@@ -48,5 +48,7 @@ class Map {
       vector<Group*> groups;
       Window** windows;
 };
+
+void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
 
 #endif
