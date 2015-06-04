@@ -264,5 +264,14 @@ void Graph::markAll(Node* h)
 
 void Graph::setGroup(Node* h,Group* g)
 {
+    h->setToGref2();
+    h->group = g;
+    g->nodes.push_back(h);
 	
+    size_t n = h->edge.size();
+    for(size_t i = 0;i<n;++i)
+    {
+         Node* temp = h->edge[i]->getNeighbor(h);
+         if(!temp->isGref2()) setGroup(temp);
+    }	
 }
