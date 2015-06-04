@@ -30,6 +30,8 @@ Node * Edge::getNeighbor(Node *n)
 	return 0;	
 }
 
+Node::gref = 0;
+
 Node::Node(const int i, int* c)
 {
    id = i;
@@ -38,6 +40,7 @@ Node::Node(const int i, int* c)
    y1 = c[1];
    x2 = c[2];
    y2 = c[3];
+   ref = gref;
 }
 
 void Node::addEdge(Edge *e)
@@ -54,6 +57,21 @@ bool edgeComp( const Edge* A, const Edge* B ){
 void Node::sortEdge()
 {
     sort(edge.begin(), edge.end(), edgeComp);
+}
+
+bool Node::isGref()
+{
+    return (ref == gref);
+}
+
+void Node::setToGref()
+{
+    ref = gref;
+}
+
+void Node::setGref()
+{
+    gref++;
 }
 
 Graph::~Graph()
