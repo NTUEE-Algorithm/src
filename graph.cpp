@@ -229,8 +229,8 @@ bool Graph::coloring(Node* h, int* pos)
     
     size_t n = h->edge.size();
 
-   for(size_t i = 0;i<n;++i)
-   {
+    for(size_t i = 0;i<n;++i)
+    {
         Node* temp = h->edge[i]->getNeighbor(h);
         if(!temp->isGref())
         {
@@ -245,13 +245,21 @@ bool Graph::coloring(Node* h, int* pos)
         {
             if(temp->color==h->color) return false;
         }
-   }
-   return true;
+    }
+    return true;
 }
 
 void Graph::markAll(Node* h)
 {
-	
+    h->setToGref();
+    h->setToGref2();
+   
+    size_t n = h->edge.size();
+    for(size_t i = 0;i<n;++i)
+    {
+         Node* temp = h->edge[i]->getNeighbor(h);
+         if(!temp->isGref2()) markAll(temp);
+    }	
 }
 
 void Graph::setGroup(Node* h)
