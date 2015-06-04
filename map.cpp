@@ -25,7 +25,8 @@ void Map::makeGroup()
 {
    int pos[4];
    size_t n = graph->getNumofNode();
-   graph->nodes[0]->setToGref();
+   graph->nodes[0]->setGref();
+   graph->nodes[0]->setGref2()
    for(size_t i=0;i<n;++i)
    {
       Node* h = graph->nodes[i];
