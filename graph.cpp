@@ -262,7 +262,7 @@ void Graph::markAll(Node* h)
     }	
 }
 
-void Graph::setGroup(Node* h)
+void Graph::setGroup(Node* h,Group* g)
 {
 	
 }
