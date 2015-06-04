@@ -10,6 +10,9 @@
 #include <vector>
 #include "graph.h"
 
+#define INF 2147483647
+#define NEG_INF -2147483648
+
 using namespace std;
 size_t myStrGetTok(const string&, string&, size_t = 0, const char = ',');
 
@@ -54,6 +57,7 @@ int main(int argc, char* argv[])
     
     // parse nodes
     int coordinate[4], count = 0, id = 0;
+    int x1 = INF, y1 = INF, x2 = NEG_INF, y2 = NEG_INF;    
     string tok;
     while (getline(input, buf)) {
        pos = 0;
@@ -65,10 +69,23 @@ int main(int argc, char* argv[])
           ++count;
        }
        Node* newNode = new Node(id, coordinate);
+       if (coordinate[0] < x1)
+          x1 = coordinate[0];
+       if (coordinate[1] < y1)
+          y1 = coordinate[1];
+       if (coordinate[2] > x2)
+          x2 = coordinate[2];
+       if (coordinate[3] > y2)
+          y2 = coordinate[3];    
        graph.nodesMap[id] = newNode;
        graph.nodes.push_back(newNode);
     } 
     input.close();
+    
+    graph.x1 = x1;
+    graph.y1 = y1;
+    graph.x2 = x2;
+    graph.y2 = y2;  
     
     // add edges
     graph.addEdgesInY();
