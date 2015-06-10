@@ -1,5 +1,6 @@
 #include "map.h"
 #include "graph.h"
+#include <iostream>
 
 Group::Group(Node* h, int* pos)
 {
@@ -13,10 +14,48 @@ Group::Group(Node* h, int* pos)
 
 Window::Window( int omega, int x1, int y1 )
 {
-    x=x1;
-    y=y1;
+    WX=x1;
+    WY=y1;
     OMEGA=omega;
 };
+
+void Window::BuildColor(){
+    int effx1;
+    int effx2;
+    int effy1;
+    int effy2;
+    int area=0;
+    int sum=0;
+    size_t length_g=wgroups.size();
+    for( int i=0 ; i<length_g ; i++ ){
+        size_t length_n=wgroups[i]->nodes.size();
+        for( int j=0 ; j<length_n ; j++ ){
+              if( wgroups[i]->nodes[j]->x1 > WX+OMEGA )
+                  continue;
+              if( wgroups[i]->nodes[j]->x2 < WX )
+                  continue;
+              if( wgroups[i]->nodes[j]->y1 > WY+OMEGA )
+                  continue;
+              if( wgroups[i]->nodes[j]->y2 < WY )
+                  continue;
+              if( wgroups[i]->nodes[j]->x1 < WX )
+                  effx1=WX;
+              if( wgroups[i]->nodes[j]->x2 > WX+OMEGA )
+                  effx2=WX+OMEGA;
+              if( wgroups[i]->nodes[j]->y1 < WY )
+                  effy1=WY;
+              if( wgroups[i]->nodes[j]->y2 > WY+OMEGA )
+                  effy2=WY+OMEGA;
+              
+              area=(effx2-effx1)*(effy2-effy1);
+
+              if( wgroups[i]->nodes[j]->color )
+                  sum=sum+area;
+              else
+                  sum=sum-area;
+        }
+    }
+}
 
 void Map::CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 ){
     
@@ -59,6 +98,11 @@ void Map::CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 ){
         win[WNAX][j] = new Window( OMEGA, xpin, ypin );
         ypin=ypin+OMEGA;
     }
+
+    xpin=X2-OMEGA;
+    ypin=Y2-OMEGA;
+    win[WNAX][WNAY] = new Window( OMEGA, xpin, ypin );
+    
     windows = win;
 }
 
@@ -87,4 +131,54 @@ void Map::makeGroup()
           }else graph->markAll(h);
       }
    }
+}
+
+int MinMax( vector<int>& v ){
+    size_t pow = v.size();
+    int MinCompare=100000;
+    int MaxCompare=0;
+    int counter=1;
+    int temp=0;
+    int sum=0;
+    for( int i=0 ; i<pow-1 ; i++ ){
+        counter=counter*2;
+    }
+    for( int i=0 ; i<counter ; i++ ){
+        temp=i;
+        sum=0;
+        for( int j=0 ; j<pow ; j++ ){
+            if(temp%2)
+                sum=sum+v[j];
+            else
+                sum=sum-v[j];
+            temp=temp/2;
+        }
+        cout << sum << endl;
+        if(sum<0)
+            sum=-sum;
+        if(sum<MinCompare)
+            MinCompare=sum;
+        if(sum>MaxCompare)
+            MaxCompare=sum;
+    }
+    return MaxCompare-MinCompare;
+}
+
+void Map::linkGW(){
+    int m;
+    int n;
+    int o;
+    int p;
+    size_t Glength=groups.size();
+    for( int h=0 ; h<Glength ; h++ ){
+        m=(groups[h]->x1)/OMEGA;
+        n=(groups[h]->y1)/OMEGA;
+        o=(groups[h]->x2)/OMEGA+1;
+        p=(groups[h]->y2)/OMEGA+1;
+        for( int i=m ; i<=o ; i++ ){
+            for( int j=n ; j<=p ; j++ ){
+                windows[i][j]->wgroups.push_back(groups[h]);
+            }
+        }
+    }
 }

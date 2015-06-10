@@ -21,8 +21,8 @@ void help_message() {
 int main(int argc, char* argv[])
 {
     if(argc != 3) {
-       help_message();
-       return 0;
+        help_message();
+        return 0;
     }
 
     //////////// read the input file /////////////
@@ -30,8 +30,8 @@ int main(int argc, char* argv[])
     fstream input;
     input.open(argv[1]);
     if (!input.is_open()) {
-       cout << "Error: File is not open!!" << endl;
-       return 0;
+        cout << "Error: File is not open!!" << endl;
+        return 0;
     }
     
     Graph graph;
@@ -57,17 +57,17 @@ int main(int argc, char* argv[])
     int coordinate[4], count = 0, id = 0;
     string tok;
     while (getline(input, buf)) {
-       pos = 0;
-       count = 0;
-       ++id;
-       while (pos != string::npos) {
-          pos = myStrGetTok(buf, tok, pos);
-          coordinate[count] = atoi(tok.c_str());
-          ++count;
-       }
-       Node* newNode = new Node(id, coordinate);
-       graph.nodesMap[id] = newNode;
-       graph.nodes.push_back(newNode);
+        pos = 0;
+        count = 0;
+        ++id;
+        while (pos != string::npos) {
+            pos = myStrGetTok(buf, tok, pos);
+            coordinate[count] = atoi(tok.c_str());
+            ++count;
+        }
+        Node* newNode = new Node(id, coordinate);
+        graph.nodesMap[id] = newNode;
+        graph.nodes.push_back(newNode);
     } 
     input.close();
 
@@ -79,6 +79,8 @@ int main(int argc, char* argv[])
     
     Map map(&graph);
     map.makeGroup();   // make group and color
+
+    
     
 
 
@@ -87,15 +89,15 @@ int main(int argc, char* argv[])
     fstream output;
     output.open(argv[2], ios::out);
     if (!output) {
-       cout << "Error: File is not open!!" << endl;
-       return 0;
+        cout << "Error: File is not open!!" << endl;
+        return 0;
     }
     
     output << "// used for debugging graph" << endl 
            << "graph {" << endl;   
     for (size_t i=0; i<graph.edges.size(); ++i)
         output << "v" << graph.edges[i]->node[0]->id << " -- v" 
-             << graph.edges[i]->node[1]->id << ";" << endl;
+               << graph.edges[i]->node[1]->id << ";" << endl;
     output << "}";
 
     output.close();

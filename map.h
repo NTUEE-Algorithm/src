@@ -14,9 +14,7 @@ class Group {
       Group(Node* h, int* pos);//do not handle anything about window
       Node* head;
       vector<Node *> nodes;
-   
-   private:
-      vector<Window*> windows;
+      Window*** gwindows;
       double effect;
       // pos
       //left down
@@ -30,25 +28,28 @@ class Group {
 class Window {
    public:
       Window( int omega, int x, int y );
-      int x, y;
+      int WX, WY;
       int OMEGA;
-      vector<Group*> groups;
-
+      vector<Group*> wgroups;
+      vector<int> color;
+      void BuildColor();
 };
 
 class Map {
    public:
       Map(Graph* g) { graph = g;}
       ~Map();
+      int OMEGA;
       void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
       void makeGroup();
-      
+      void linkGW();
+
    private:
       Graph* graph;
       vector<Group*> groups;
       Window*** windows;
 };
 
-
+int MinMax( vector<int>& v );
 
 #endif

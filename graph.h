@@ -14,6 +14,7 @@ using namespace std;
 
 class Node;
 class Group;
+
 class Edge{
 
 	public:
@@ -62,11 +63,11 @@ class Graph{
 		
 		void addEdge(Node* v1, Node* v2);
 		void sortEdgesOfNode();
-                void sortNodesByID();
-                void sortNodesByX1(); 
-                void sortNodesByY1();  
-                void addEdgesInY();
-                void addEdgesInX();                 
+        void sortNodesByID();
+        void sortNodesByX1(); 
+        void sortNodesByY1();  
+        void addEdgesInY();
+        void addEdgesInX();                 
 		void init();
 		Node* getNodeById(const int& id);
 		
@@ -84,7 +85,7 @@ class Graph{
 		int x2;
 		int y2;
 		map<int, Node *> nodesMap;
-                vector<Node *> nodes;
+        vector<Node *> nodes;
 		vector<Edge *> edges;
 };
 
