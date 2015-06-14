@@ -233,12 +233,12 @@ void Map::gdColor(){
 	
     size_t n=groups.size();
 	
-    Donegroup dp(groups[0]);
+    Donegroup dg(groups[0]);
 
     for(size_t i=1;i<n;){
         size_t j=i;
 	size_t jtemp=i;
-	int maxnumtemp=numeric_limits<int>::max;
+	int maxnumtemp = numeric_limits<int>::max();
 	bool notexist=true;
 		
 	for(;j<n&&j<i+n/range;++j){
@@ -263,7 +263,7 @@ void Map::gdColor(){
             if(i==j) ++i;
 	    tryBest(dg, groups[j]);
 	    markAll(dg, groups[j]);
-	    dp.update(groups[j]);
+	    dg.update(groups[j]);
 	}
     }
 }
