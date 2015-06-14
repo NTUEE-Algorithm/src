@@ -12,6 +12,10 @@ class Node;
 class Group {
    public:
       Group(Node* h, int* pos);//do not handle anything about window
+      bool isGref();
+      void setToGref();
+		void setGref();
+      
       Node* head;
       vector<Node *> nodes;
       Window*** gwindows;
@@ -22,7 +26,9 @@ class Group {
       int y1;
       //right top
       int x2;
-      int y2;    
+      int y2;
+      int ref;
+		static int gref;
 };
 
 class Window {
