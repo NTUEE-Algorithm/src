@@ -43,6 +43,7 @@ class Map {
       void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
       void makeGroup();
       void linkGW();
+      void sortByeffect();
 
    private:
       Graph* graph;
