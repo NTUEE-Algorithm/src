@@ -193,3 +193,8 @@ bool effectCompare(Group* g1, Group* g2){
 void Map::sortByeffect(){
     sort(groups.begin(),groups.end(),effectCompare);
 }
+
+void Map::gdColor(){
+    sortByeffect();
+    
+}
