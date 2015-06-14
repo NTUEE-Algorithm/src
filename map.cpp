@@ -2,7 +2,7 @@
 #include "graph.h"
 #include <iostream>
 #include <algorithm>
-#include<limits>
+#include <limits>
 
 using namespace std;
 int Group::gref = 0;
@@ -15,6 +15,7 @@ Group::Group(Node* h, int* pos)
     y1 = pos[1];
     x2 = pos[2];
     y2 = pos[3];
+    ref = gref;
 };
 
 bool Group::isGref()
@@ -213,7 +214,7 @@ void Map::sortByeffect(){
 
 void myswap(Group*& g1, Group*& g2){
     Group* temp=g1;
-	g1=g2;
+    g1=g2;
     g2=temp;
 }
 
