@@ -44,6 +44,7 @@ class Map {
       void makeGroup();
       void linkGW();
       void sortByeffect();
+      void gdColor();
 
    private:
       Graph* graph;
