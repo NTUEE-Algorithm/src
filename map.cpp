@@ -4,6 +4,7 @@
 #include <algorithm>
 
 using namespace std;
+int Group::gref = 0;
 
 Group::Group(Node* h, int* pos)
 {
@@ -14,6 +15,21 @@ Group::Group(Node* h, int* pos)
     x2 = pos[2];
     y2 = pos[3];
 };
+
+bool Group::isGref()
+{
+    return (ref == gref);
+}
+
+void Group::setToGref()
+{
+    ref = gref;
+}
+
+void Group::setGref()
+{
+    gref++;
+}
 
 Window::Window( int omega, int x1, int y1 )
 {
