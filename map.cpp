@@ -1,6 +1,9 @@
 #include "map.h"
 #include "graph.h"
 #include <iostream>
+#include <algorithm>
+
+using namespace std;
 
 Group::Group(Node* h, int* pos)
 {
@@ -181,4 +184,12 @@ void Map::linkGW(){
             }
         }
     }
+}
+
+bool effectCompare(Group* g1, Group* g2){
+    return ((g1->effect)>(g2->effect));
+}
+
+void Map::sortByeffect(){
+    sort(groups.begin(),groups.end(),effectCompare);
 }
