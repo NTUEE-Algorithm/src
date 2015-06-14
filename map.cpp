@@ -232,45 +232,45 @@ Class Donegroup{
 
 void Map::gdColor(){
     sortByeffect();
-	groups[0]->setGref();
+    groups[0]->setGref();
 	
-	int maxnum=10;
-	int range=10;
+    int maxnum=10;
+    int range=10;
 	
     size_t n=groups.size();
 	
-	Donegroup dp(groups[0]);
+    Donegroup dp(groups[0]);
 
     for(size_t i=1;i<n;){
         size_t j=i;
-		size_t jtemp=i;
-		int maxnumtemp=numeric_limits<int>::max;
-		bool notexist=true;
+	size_t jtemp=i;
+	int maxnumtemp=numeric_limits<int>::max;
+	bool notexist=true;
 		
-	    for(;j<n&&j<i+n/range;++j){
-		    if(groups[j]->isGref()){
-			    notexist=false;
-				int num=numberofWindow(dg, groups[j]);
-	            if(num<maxnum) break;
-			    else if(num<maxnumtemp){
-			        jtemp=j;
-			        maxnumtemp=num;
-			    }
-			    if(j==n-1){
-			        j=jtemp;
-				    maxnum=maxnumtemp;
-				    break;
-			    }
-			}
+	for(;j<n&&j<i+n/range;++j){
+	    if(groups[j]->isGref()){
+                notexist=false;
+		int num=numberofWindow(dg, groups[j]);
+	        if(num<maxnum) break;
+	        else if(num<maxnumtemp){
+	            jtemp=j;
+	            maxnumtemp=num;
+		}
+	        if(j==n-1){
+		    j=jtemp;
+		    maxnum=maxnumtemp;
+		    break;
+	        }
 	    }
-		if(notexist){
-		    i=(n>i+n/range)?i+n/range :n;
-		}
-		else{
-		    if(i==j) ++i;
-		    tryBest(dg, groups[j]);
-		    markAll(dg, groups[j]);
-			dp.update(groups[j]);
-		}
+	}
+	if(notexist){
+            i=(n>i+n/range)?i+n/range :n;
+	}
+	else{
+            if(i==j) ++i;
+	    tryBest(dg, groups[j]);
+	    markAll(dg, groups[j]);
+	    dp.update(groups[j]);
+	}
     }
 }
