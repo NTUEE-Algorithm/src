@@ -212,13 +212,65 @@ void Map::sortByeffect(){
     sort(groups.begin(),groups.end(),effectCompare);
 }
 
-void myswap(Group*& g1, Group*& g2){
-    Group* temp=g1;
-    g1=g2;
-    g2=temp;
-}
+Class Donegroup{
+    public:
+	Donegroup(Group* g):x1(g->x1), y1(g->y1), x2(g->x2), y2(g->y2){}
+	void update(Group* g){
+	    if(x1>g->x1) x1=g->x1;
+	    if(y1>g->y1) y1=g->y1;
+		if(x2<g->x2) x2=g->x2;
+		if(y2<g->y2) y2=g->y2;
+	}
+	//left down
+    int x1;
+    int y1;
+    //right top
+    int x2;
+    int y2;
+
+};
 
 void Map::gdColor(){
     sortByeffect();
-    
+	groups[0]->setGref();
+	
+	int maxnum=10;
+	int range=10;
+	
+    size_t n=groups.size();
+	
+	Donegroup dp(groups[0]);
+
+    for(size_t i=1;i<n;){
+        size_t j=i;
+		size_t jtemp=i;
+		int maxnumtemp=numeric_limits<int>::max;
+		bool notexist=true;
+		
+	    for(;j<n&&j<i+n/range;++j){
+		    if(groups[j]->isGref()){
+			    notexist=false;
+				int num=numberofWindow(dg, groups[j]);
+	            if(num<maxnum) break;
+			    else if(num<maxnumtemp){
+			        jtemp=j;
+			        maxnumtemp=num;
+			    }
+			    if(j==n-1){
+			        j=jtemp;
+				    maxnum=maxnumtemp;
+				    break;
+			    }
+			}
+	    }
+		if(notexist){
+		    i=(n>i+n/range)?i+n/range :n;
+		}
+		else{
+		    if(i==j) ++i;
+		    tryBest(dg, groups[j]);
+		    markAll(dg, groups[j]);
+			dp.update(groups[j]);
+		}
+    }
 }
