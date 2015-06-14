@@ -212,24 +212,6 @@ void Map::sortByeffect(){
     sort(groups.begin(),groups.end(),effectCompare);
 }
 
-Class Donegroup{
-    public:
-	Donegroup(Group* g):x1(g->x1), y1(g->y1), x2(g->x2), y2(g->y2){}
-	void update(Group* g){
-	    if(x1>g->x1) x1=g->x1;
-	    if(y1>g->y1) y1=g->y1;
-		if(x2<g->x2) x2=g->x2;
-		if(y2<g->y2) y2=g->y2;
-	}
-	//left down
-    int x1;
-    int y1;
-    //right top
-    int x2;
-    int y2;
-
-};
-
 void Map::gdColor(){
     sortByeffect();
     groups[0]->setGref();
@@ -265,8 +247,7 @@ void Map::gdColor(){
 	}
 	if(notexist){
             i=(n>i+n/range)?i+n/range :n;
-	}
-	else{
+	}else{
             if(i==j) ++i;
 	    tryBest(dg, groups[j]);
 	    markAll(dg, groups[j]);
