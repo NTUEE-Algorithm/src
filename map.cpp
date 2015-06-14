@@ -2,6 +2,7 @@
 #include "graph.h"
 #include <iostream>
 #include <algorithm>
+#include<limits>
 
 using namespace std;
 int Group::gref = 0;
@@ -208,6 +209,12 @@ bool effectCompare(Group* g1, Group* g2){
 
 void Map::sortByeffect(){
     sort(groups.begin(),groups.end(),effectCompare);
+}
+
+void myswap(Group*& g1, Group*& g2){
+    Group* temp=g1;
+	g1=g2;
+    g2=temp;
 }
 
 void Map::gdColor(){
