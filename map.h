@@ -51,7 +51,7 @@ class Map {
       void makeGroup();
       void linkGW();
       
-      int numberofWindow(Donegroup& dg, Group* g);
+      int numberofWindow(Donegroup& dg, Group* g); 
       void tryBest(Donegroup& dg, Group* g);
       void markAll(Donegroup& dg, Group* g);
       void sortByeffect();
