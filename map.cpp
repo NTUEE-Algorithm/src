@@ -204,6 +204,18 @@ void Map::linkGW(){
     }
 }
 
+int Map::numberofWindow(Donegroup& dg, Group* g){
+    return 0;
+}
+
+void Map::tryBest(Donegroup& dg, Group* g){
+	
+}
+
+void Map::markAll(Donegroup& dg, Group* g){
+	
+}
+
 bool effectCompare(Group* g1, Group* g2){
     return ((g1->effect)>(g2->effect));
 }
