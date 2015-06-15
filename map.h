@@ -63,7 +63,7 @@ class Map {
       Window*** windows;
 };
 
-Class Donegroup{
+class Donegroup{
    public:
 	Donegroup(Group* g):x1(g->x1), y1(g->y1), x2(g->x2), y2(g->y2){}
 	void update(Group* g){
