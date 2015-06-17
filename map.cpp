@@ -334,7 +334,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
 
 //set to the best choice and mark ref
     groups[0]->setGref2();
-    for(size_t n=1;n<max;++n){
+    for(size_t n=0;n<max;++n){
         if((best&mask[n-1])>>n) gptr[n]->setToGref2();
     }	
 
