@@ -59,11 +59,13 @@ void Group::reverse(){
     }
 }
 
+int Window::gref = 0;
 Window::Window( int omega, int x1, int y1 )
 {
     WX=x1;
     WY=y1;
     OMEGA=omega;
+    ref = gref;
 };
 
 void Window::BuildColor(){
@@ -102,6 +104,21 @@ void Window::BuildColor(){
                   sum=sum-area;
         }
     }
+}
+
+bool Window::isGref()
+{
+    return (ref == gref);
+}
+
+void Window::setToGref()
+{
+    ref = gref;
+}
+
+void Window::setGref()
+{
+    gref++;
 }
 
 void Map::CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 ){
