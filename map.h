@@ -19,9 +19,6 @@ class Group {
       bool isGref2();
       void setToGref2();
       void setGref2();
-      bool isGref3();
-      void setToGref3();
-      void setGref3();
       
       void reverse();
       
@@ -38,9 +35,7 @@ class Group {
       int y2;
       int ref;
       int ref2;
-      int ref3;
       static int gref;
-      static int gref2;
       static int gref2;
 };
 
