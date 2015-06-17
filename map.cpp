@@ -278,15 +278,13 @@ void Map::tryBest(Donegroup& dg, Group* g){
     size_t max=gptr.size();
     size_t mask[max-1];
     mask[0]=1;
-    size_t mmax=1;
-    for(size_t n=1;n<max-1;++n){
+    for(size_t n=1;n<max;++n){
         mask[n]=mask[n-1]<<1;
-        mmax*=2;
     }
 	
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
-    for(size_t m=0;m<mmax;++m){
+    for(size_t m=0;m<mask[max-1];++m){
         groups[0]->setGref2();
         for(size_t n=1;n<max;++n){
            if((m&mask[n-1])>>n) gptr[n]->setToGref2();
