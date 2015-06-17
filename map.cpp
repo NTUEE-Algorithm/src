@@ -219,14 +219,35 @@ void Map::linkGW(){
     for( int h=0 ; h<Glength ; h++ ){
         m=(groups[h]->x1)/OMEGA;
         n=(groups[h]->y1)/OMEGA;
-        o=(groups[h]->x2)/OMEGA+1;
-        p=(groups[h]->y2)/OMEGA+1;
+        if( (groups[h]->x2)%OMEGA==0 )
+            o=(groups[h]->x2)/OMEGA-1;
+        else    
+            o=(groups[h]->x2)/OMEGA;
+        if( (groups[h]->y2)%OMEGA==0 )
+            p=(groups[h]->y2)/OMEGA-1;
+        else
+            p=(groups[h]->y2)/OMEGA;
         for( int i=m ; i<=o ; i++ ){
             for( int j=n ; j<=p ; j++ ){
-                windows[i][j]->wgroups.push_back(groups[h]);
+                if( CheckSharing( groups[h], windows[i][j] ) )
+                    windows[i][j]->wgroups.push_back(groups[h]);
             }
         }
     }
+}
+
+bool Map::CheckSharing( Group* g, Window* w ){
+    bool check=false;
+    size_t length=g->nodes.size();
+    for( size_t i=0 ; i<length ; i++ ){
+        if( g->nodes[i]->x1 > (w->WX)+(w->OMEGA) ) continue;
+        if( g->nodes[i]->y1 > (w->WY)+(w->OMEGA) ) continue;
+        if( g->nodes[i]->x2 < (w->WX) ) continue;
+        if( g->nodes[i]->y2 < (w->WY) ) continue;
+        check=true;
+        break;
+    }
+    return check;
 }
 
 int Map::numberofWindow(Donegroup& dg, Group* g){
@@ -375,5 +396,26 @@ void Map::gdColor(){
 }
 
 void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
-	
+	int xpin1;
+    int ypin1;
+    int xpin2;
+    int ypin2;
+    if( dg.x1 < g->x1 ) xpin1=dg.x1;
+    else xpin1=g->x1;
+    if( dg.x2 > g->x2 ) xpin2=dg.x2;
+    else xpin2=g->x2;
+    if( dg.y1 < g->y1 ) ypin1=dg.y1;
+    else ypin1=g->y1;
+    if( dg.y2 > g->y2 ) ypin2=dg.y2;
+    else ypin2=g->y2;
+    result[0]=(xpin1)/OMEGA;
+    result[1]=(ypin1)/OMEGA;
+    if( xpin2%OMEGA==0 )
+        result[2]=xpin2/OMEGA-1;
+    else    
+        result[2]=xpin2/OMEGA;
+    if( ypin2%OMEGA==0 )
+        result[3]=ypin2/OMEGA-1;
+    else
+        result[3]=ypin2/OMEGA;
 }

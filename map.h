@@ -53,12 +53,12 @@ class Map {
    public:
       Map(Graph* g) { graph = g;}
       ~Map();
-      int OMEGA;
+      int  OMEGA;
       void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
       void makeGroup();
       void linkGW();
-      
-      int numberofWindow(Donegroup& dg, Group* g); 
+      bool CheckSharing( Group* g, Window* w );
+      int  numberofWindow(Donegroup& dg, Group* g);
       void tryBest(Donegroup& dg, Group* g);
       void sortByeffect();
       void gdColor();
