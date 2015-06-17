@@ -18,6 +18,7 @@ Group::Group(Node* h, int* pos)
     y2 = pos[3];
     ref = gref;
     ref2 = gref2;
+    rev = false;
 };
 
 bool Group::isGref()
@@ -282,16 +283,16 @@ void Map::tryBest(Donegroup& dg, Group* g){
 	
     for(int i=pos[0];i<=pos[1];++i){
         for(int j=pos[2];j<=pos[3];++j){
-	         Window* w=windows[i][j];
-	         size_t nmax=w->wgroups.size();
-	         for(size_t n=0;n<nmax;++n){
-	             if(!w->wgroups[n]->isGref()){
-		              if(!w->wgroups[n]->isGref2()){
-		              gptr.push_back(w->wgroups[n]);
-	   	           w->wgroups[n]->setToGref2();
+	    Window* w=windows[i][j];
+	    size_t nmax=w->wgroups.size();
+	    for(size_t n=0;n<nmax;++n){
+	        if(!w->wgroups[n]->isGref()){
+		    if(!w->wgroups[n]->isGref2()){
+		        gptr.push_back(w->wgroups[n]);
+	   	        w->wgroups[n]->setToGref2();
                     }
                 }
-	         } 
+	    } 
         }
     }
 
@@ -318,8 +319,13 @@ void Map::tryBest(Donegroup& dg, Group* g){
 	        size_t nmax=w->wgroups.size();
 		int wsum=0;
 	        for(size_t n=0;n<nmax;++n){
-	            if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
-                    else wsum-=w->color[n];
+	            if(w->wgroups[n]->isGref()){
+	                if(w->wgroups[n]->rev)  wsum-=w->color[n];
+	                else  wsum+=w->color[n];
+	            }else{
+	                if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
+                        else wsum-=w->color[n];
+	            }
 	        }
 	        if(wsum<0)wsum=-wsum;
 		colordiff+=wsum;
@@ -339,7 +345,10 @@ void Map::tryBest(Donegroup& dg, Group* g){
     }	
 
     for(size_t n=0;n<max;++n){
-        if(!gptr[n]->isGref2()) gptr[n]->reverse();
+        if(!gptr[n]->isGref2()){
+            gptr[n]->reverse();
+            gptr[n]->rev=true;   
+        }
         gptr[n]->setToGref();
     }    	
 }
