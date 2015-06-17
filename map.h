@@ -37,6 +37,8 @@ class Group {
       int ref2;
       static int gref;
       static int gref2;
+      
+      bool rev;
 };
 
 class Window {
