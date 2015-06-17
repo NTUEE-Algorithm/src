@@ -222,7 +222,27 @@ void Map::linkGW(){
 }
 
 int Map::numberofWindow(Donegroup& dg, Group* g){
-    return 0;
+    int pos[4];
+    getWindowNumber(dg, g, pos);
+    groups[0]->setGref2();
+    int sum=0;
+	
+    for(int i=pos[0];i<=pos[1];++i){
+        for(int j=pos[2];j<=pos[3];++j){
+	    Window* w=windows[i][j];
+	    size_t nmax=w->wgroups.size();
+	    for(size_t n=0;n<nmax;++n){
+	        if(!w->wgroups[n]->isGref()){
+		    if(!w->wgroups[n]->isGref2()){
+		        ++sum;
+			w->wgroups[n]->setToGref2();
+		    }
+	        }
+	    }
+	}
+    }
+	
+    return sum;
 }
 
 void Map::tryBest(Donegroup& dg, Group* g){
