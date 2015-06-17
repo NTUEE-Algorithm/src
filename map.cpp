@@ -246,11 +246,73 @@ int Map::numberofWindow(Donegroup& dg, Group* g){
 }
 
 void Map::tryBest(Donegroup& dg, Group* g){
+    int pos[4];
+    getWindowNumber(dg, g, pos);
+    groups[0]->setGref2();
+    vector<Group*> gptr;
 	
-}
+    for(int i=pos[0];i<=pos[1];++i){
+        for(int j=pos[2];j<=pos[3];++j){
+	    Window* w=windows[i][j];
+	    size_t nmax=w->wgroups.size();
+	    for(size_t n=0;n<nmax;++n){
+	        if(!w->wgroups[n]->isGref()){
+		    if(!w->wgroups[n]->isGref2()){
+		        gptr.push_back(w->wgroups[n]);
+			w->wgroups[n]->setToGref2();
+                    }
+	        }
+	     }
+	}
+    }
 
-void Map::markAll(Donegroup& dg, Group* g){
+//try all possibility
+    size_t max=gptr.size();
+    size_t mask[max-1];
+    mask[0]=1;
+    for(size_t n=1;n<max-1;++n){
+        mask[n]=mask[n-1]<<1;
+    }
 	
+    size_t best;
+    int mincolordiff=numeric_limits<int>::max();
+    for(size_t m=0;m<mask[max-2];++m){
+        groups[0]->setGref2();
+        for(size_t n=1;n<max;++n){
+           if((m&mask[n-1])>>n) gptr[n]->setToGref2();
+	}	
+
+        int colordiff=0;	
+	for(int i=pos[0];i<=pos[1];++i){
+            for(int j=pos[2];j<=pos[3];++j){
+	        Window* w=windows[i][j];
+	        size_t nmax=w->wgroups.size();
+		int wsum=0;
+	        for(size_t n=0;n<nmax;++n){
+	            if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
+                    else wsum-=w->color[n];
+	        }
+	        if(wsum<0)wsum=-wsum;
+		colordiff+=wsum;
+	    }
+        }
+		
+        if(colordiff<mincolordiff){
+            best=m;
+	    mincolordiff=colordiff;
+        }
+    }
+
+//set to the best choice and mark ref
+    groups[0]->setGref2();
+    for(size_t n=1;n<max;++n){
+        if((best&mask[n-1])>>n) gptr[n]->setToGref2();
+    }	
+
+    for(size_t n=0;n<nmax;++n){
+	if(!gptr[n]->isGref2()) gptr[n]->reverse();
+	gptr[n]->setToGref();
+    }    	
 }
 
 bool effectCompare(Group* g1, Group* g2){
@@ -299,7 +361,6 @@ void Map::gdColor(){
 	}else{
             if(i==j) ++i;
 	    tryBest(dg, groups[j]);
-	    markAll(dg, groups[j]);
 	    dg.update(groups[j]);
 	}
     }
