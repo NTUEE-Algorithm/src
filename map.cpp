@@ -240,8 +240,8 @@ bool Map::CheckSharing( Group* g, Window* w ){
     bool check=false;
     size_t length=g->nodes.size();
     for( size_t i=0 ; i<length ; i++ ){
-        if( g->nodes[i]->x1 > (w->WX)+(w->OMEGA) ) continue;
-        if( g->nodes[i]->y1 > (w->WY)+(w->OMEGA) ) continue;
+        if( g->nodes[i]->x1 > (w->WX)+(OMEGA) ) continue;
+        if( g->nodes[i]->y1 > (w->WY)+(OMEGA) ) continue;
         if( g->nodes[i]->x2 < (w->WX) ) continue;
         if( g->nodes[i]->y2 < (w->WY) ) continue;
         check=true;
