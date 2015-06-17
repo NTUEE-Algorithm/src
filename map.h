@@ -56,6 +56,7 @@ class Map {
       void markAll(Donegroup& dg, Group* g);
       void sortByeffect();
       void gdColor();
+      void getWindowNumber(Donegroup& dg, Group* g, int* result);
 
    private:
       Graph* graph;
