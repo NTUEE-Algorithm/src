@@ -7,6 +7,7 @@
 using namespace std;
 int Group::gref = 0;
 int Group::gref2 = 0;
+int Group::gref3 = 0;
 
 Group::Group(Node* h, int* pos)
 {
@@ -18,6 +19,7 @@ Group::Group(Node* h, int* pos)
     y2 = pos[3];
     ref = gref;
     ref2 = gref2;
+    ref3 = gref3;
 };
 
 bool Group::isGref()
@@ -48,6 +50,26 @@ void Group::setToGref2()
 void Group::setGref2()
 {
     gref2++;
+}
+
+bool Group::isGref3()
+{
+    return (ref3 == gref3);
+}
+
+void Group::setToGref3()
+{
+    ref3 = gref3;
+}
+
+void Group::setGref3()
+{
+    gref3++;
+}
+
+void Group::reverse(){
+	
+	
 }
 
 Window::Window( int omega, int x1, int y1 )
@@ -270,13 +292,15 @@ void Map::tryBest(Donegroup& dg, Group* g){
     size_t max=gptr.size();
     size_t mask[max-1];
     mask[0]=1;
+    size_t mmax=1;
     for(size_t n=1;n<max-1;++n){
         mask[n]=mask[n-1]<<1;
+        mmax*=2;
     }
 	
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
-    for(size_t m=0;m<mask[max-2];++m){
+    for(size_t m=0;m<mmax;++m){
         groups[0]->setGref2();
         for(size_t n=1;n<max;++n){
            if((m&mask[n-1])>>n) gptr[n]->setToGref2();
