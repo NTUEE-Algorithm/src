@@ -262,7 +262,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
 			w->wgroups[n]->setToGref2();
                     }
 	        }
-	     }
+	    }
 	}
     }
 
