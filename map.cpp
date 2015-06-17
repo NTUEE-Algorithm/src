@@ -360,7 +360,8 @@ void Map::gdColor(){
     int range=10;
 	
     size_t n=groups.size();
-	
+    
+    groups[0]->setToGref();
     Donegroup dg(groups[0]);
 
     for(size_t i=1;i<n;){
