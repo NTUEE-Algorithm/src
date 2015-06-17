@@ -49,6 +49,12 @@ class Window {
       vector<Group*> wgroups;
       vector<int> color;
       void BuildColor();
+      
+      bool isGref();
+      void setToGref();
+      void setGref();
+      int ref;
+      static int gref;
 };
 
 class Map {
