@@ -16,6 +16,9 @@ class Group {
       bool isGref();
       void setToGref();
       void setGref();
+      bool isGref2();
+      void setToGref2();
+      void setGref2();
       
       Node* head;
       vector<Node *> nodes;
@@ -29,7 +32,9 @@ class Group {
       int x2;
       int y2;
       int ref;
+      int ref2;
       static int gref;
+      static int gref2;
 };
 
 class Window {
