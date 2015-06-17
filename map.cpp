@@ -267,3 +267,7 @@ void Map::gdColor(){
 	}
     }
 }
+
+void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
+	
+}
