@@ -261,17 +261,17 @@ void Map::tryBest(Donegroup& dg, Group* g){
 	
     for(int i=pos[0];i<=pos[1];++i){
         for(int j=pos[2];j<=pos[3];++j){
-	    Window* w=windows[i][j];
-	    size_t nmax=w->wgroups.size();
-	    for(size_t n=0;n<nmax;++n){
-	        if(!w->wgroups[n]->isGref()){
-		    if(!w->wgroups[n]->isGref2()){
-		        gptr.push_back(w->wgroups[n]);
-			w->wgroups[n]->setToGref2();
+	         Window* w=windows[i][j];
+	         size_t nmax=w->wgroups.size();
+	         for(size_t n=0;n<nmax;++n){
+	             if(!w->wgroups[n]->isGref()){
+		              if(!w->wgroups[n]->isGref2()){
+		              gptr.push_back(w->wgroups[n]);
+	   	           w->wgroups[n]->setToGref2();
                     }
-	        }
-	    }
-	}
+                }
+	         } 
+        }
     }
 
 //try all possibility
@@ -317,9 +317,9 @@ void Map::tryBest(Donegroup& dg, Group* g){
         if((best&mask[n-1])>>n) gptr[n]->setToGref2();
     }	
 
-    for(size_t n=0;n<nmax;++n){
-	if(!gptr[n]->isGref2()) gptr[n]->reverse();
-	gptr[n]->setToGref();
+    for(size_t n=0;n<max;++n){
+        if(!gptr[n]->isGref2()) gptr[n]->reverse();
+        gptr[n]->setToGref();
     }    	
 }
 
