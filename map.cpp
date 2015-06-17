@@ -301,15 +301,17 @@ void Map::tryBest(Donegroup& dg, Group* g){
     for(int i=pos[0];i<=pos[1];++i){
         for(int j=pos[2];j<=pos[3];++j){
 	    Window* w=windows[i][j];
-	    size_t nmax=w->wgroups.size();
-	    for(size_t n=0;n<nmax;++n){
-	        if(!w->wgroups[n]->isGref()){
-		    if(!w->wgroups[n]->isGref2()){
-		        gptr.push_back(w->wgroups[n]);
-	   	        w->wgroups[n]->setToGref2();
+	    if(!w->isGref()){
+	        size_t nmax=w->wgroups.size();
+	        for(size_t n=0;n<nmax;++n){
+	            if(!w->wgroups[n]->isGref()){
+		        if(!w->wgroups[n]->isGref2()){
+		            gptr.push_back(w->wgroups[n]);
+	   	            w->wgroups[n]->setToGref2();
+                        }
                     }
-                }
-	    } 
+	        }
+	    }
         }
     }
 
@@ -323,6 +325,9 @@ void Map::tryBest(Donegroup& dg, Group* g){
 	
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
+    
+    windows[0][0]->setGref();
+    
     for(size_t m=0;m<mask[max-1];++m){
         groups[0]->setGref2();
         for(size_t n=1;n<max;++n){
@@ -333,19 +338,21 @@ void Map::tryBest(Donegroup& dg, Group* g){
 	for(int i=pos[0];i<=pos[1];++i){
             for(int j=pos[2];j<=pos[3];++j){
 	        Window* w=windows[i][j];
-	        size_t nmax=w->wgroups.size();
-		int wsum=0;
-	        for(size_t n=0;n<nmax;++n){
-	            if(w->wgroups[n]->isGref()){
-	                if(w->wgroups[n]->rev)  wsum-=w->color[n];
-	                else  wsum+=w->color[n];
-	            }else{
-	                if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
-                        else wsum-=w->color[n];
+	        if(!w->isGref()){
+	            size_t nmax=w->wgroups.size();
+		    int wsum=0;
+	            for(size_t n=0;n<nmax;++n){
+	                if(w->wgroups[n]->isGref()){
+	                    if(w->wgroups[n]->rev)  wsum-=w->color[n];
+	                    else  wsum+=w->color[n];
+	                }else{
+	                    if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
+                            else wsum-=w->color[n];
+	                }
 	            }
+	            if(wsum<0)wsum=-wsum;
+		    colordiff+=wsum;
 	        }
-	        if(wsum<0)wsum=-wsum;
-		colordiff+=wsum;
 	    }
         }
 		
@@ -367,7 +374,13 @@ void Map::tryBest(Donegroup& dg, Group* g){
             gptr[n]->rev=true;   
         }
         gptr[n]->setToGref();
-    }    	
+    }
+    
+    for(int i=pos[0];i<=pos[1];++i){
+        for(int j=pos[2];j<=pos[3];++j){
+	    windows[i][j]->setToGref();
+        }
+    }
 }
 
 bool effectCompare(Group* g1, Group* g2){
