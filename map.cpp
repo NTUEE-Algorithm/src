@@ -6,6 +6,7 @@
 
 using namespace std;
 int Group::gref = 0;
+int Group::gref2 = 0;
 
 Group::Group(Node* h, int* pos)
 {
@@ -16,6 +17,7 @@ Group::Group(Node* h, int* pos)
     x2 = pos[2];
     y2 = pos[3];
     ref = gref;
+    ref2 = gref2;
 };
 
 bool Group::isGref()
@@ -31,6 +33,21 @@ void Group::setToGref()
 void Group::setGref()
 {
     gref++;
+}
+
+bool Group::isGref2()
+{
+    return (ref2 == gref2);
+}
+
+void Group::setToGref2()
+{
+    ref2 = gref2;
+}
+
+void Group::setGref2()
+{
+    gref2++;
 }
 
 Window::Window( int omega, int x1, int y1 )
