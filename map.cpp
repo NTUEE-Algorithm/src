@@ -7,7 +7,6 @@
 using namespace std;
 int Group::gref = 0;
 int Group::gref2 = 0;
-int Group::gref3 = 0;
 
 Group::Group(Node* h, int* pos)
 {
@@ -19,7 +18,6 @@ Group::Group(Node* h, int* pos)
     y2 = pos[3];
     ref = gref;
     ref2 = gref2;
-    ref3 = gref3;
 };
 
 bool Group::isGref()
@@ -52,24 +50,12 @@ void Group::setGref2()
     gref2++;
 }
 
-bool Group::isGref3()
-{
-    return (ref3 == gref3);
-}
-
-void Group::setToGref3()
-{
-    ref3 = gref3;
-}
-
-void Group::setGref3()
-{
-    gref3++;
-}
-
 void Group::reverse(){
-	
-	
+    size_t n=nodes.size();
+    for(size_t i=0;i<n;++i){
+        if(nodes[i]->color==0)nodes[i]->color=1;
+	else nodes[i]->color=0;
+    }
 }
 
 Window::Window( int omega, int x1, int y1 )
