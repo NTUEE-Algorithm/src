@@ -59,10 +59,10 @@ class Window {
 
 class Map {
    public:
-      Map(Graph* g) { graph = g;}
+      Map(Graph* g) { graph = g; }
       ~Map();
       int  OMEGA;
-      void CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 );
+      void CreatWindow( int& X1, int& X2, int& Y1, int& Y2 );
       void makeGroup();
       void linkGW();
       bool CheckSharing( Group* g, Window* w );
@@ -94,7 +94,5 @@ class Donegroup{
    int x2;
    int y2;
 };
-
-int MinMax( vector<int>& v );
 
 #endif
