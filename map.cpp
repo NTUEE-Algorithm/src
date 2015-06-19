@@ -133,24 +133,24 @@ void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
     Window*** win;
     
     if( width%OMEGA!=0 && height%OMEGA!=0 ){
-        win = new Window** [WNAY+1];
-        for( int i=0 ; i<WNAY ; i++ )
-            win[i] = new Window* [WNAX+1];
+        win = new Window** [WNAX+1];
+        for( int i=0 ; i<WNAX+1 ; i++ )
+            win[i] = new Window* [WNAY+1];
     }
     else if( width%OMEGA==0 && height%OMEGA!=0 ){
-        win = new Window** [WNAY+1];
-        for( int i=0 ; i<WNAY ; i++ )
-            win[i] = new Window* [WNAX];
+        win = new Window** [WNAX];
+        for( int i=0 ; i<WNAX ; i++ )
+            win[i] = new Window* [WNAY+1];
     }
     else if( width%OMEGA!=0 && height%OMEGA==0 ){
-        win = new Window** [WNAY];
-        for( int i=0 ; i<WNAY ; i++ )
-            win[i] = new Window* [WNAX+1];
+        win = new Window** [WNAX+1];
+        for( int i=0 ; i<WNAX+1 ; i++ )
+            win[i] = new Window* [WNAY];
     }
     else if( width%OMEGA==0 && height%OMEGA==0 ){
-        win = new Window** [WNAY];
-        for( int i=0 ; i<WNAY ; i++ )
-            win[i] = new Window* [WNAX];
+        win = new Window** [WNAX];
+        for( int i=0 ; i<WNAX ; i++ )
+            win[i] = new Window* [WNAY];
     }
     
 
