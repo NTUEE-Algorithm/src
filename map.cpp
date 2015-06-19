@@ -425,23 +425,23 @@ void Map::gdColor(){
 	        if(!groups[j]->isGref()){
                 notexist=false;
                 int num=numberofWindow(dg, groups[j]);
-	            if(num<maxnum) break;
-	            else if(num<maxnumtemp){
-	                jtemp=j;
-	                maxnumtemp=num;
-		        }
-	            if(j==n-1||j==i+n/range){
-		            j=jtemp;
-		            maxnum=maxnumtemp;
-		            break;
-	            }
+                if(num<maxnum) break;
+                else if(num<maxnumtemp){
+                    jtemp=j;
+                    maxnumtemp=num;
+                }
+                if(j==n-1||j==i+n/range){
+                    j=jtemp;
+                    maxnum=maxnumtemp;
+                    break;
+                }
             }
         }
         if(notexist) i=(n>i+n/range+1)?i+n/range+1 :n;
         else{
             if(i==j) ++i;
-	        tryBest(dg, groups[j]);
-	        dg.update(groups[j]);
+            tryBest(dg, groups[j]);
+            dg.update(groups[j]);
         }
     }
 }
