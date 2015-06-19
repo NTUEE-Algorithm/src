@@ -121,21 +121,15 @@ void Window::setGref()
     gref++;
 }
 
-void Map::CreatWindow( int& OMEGA, int& X1, int& X2, int& Y1, int& Y2 ){
-    
-    int width;
-    int height;
-    int WNAX;  //  window numbers along x without the last one
-    int WNAY;  //  window numbers along y without the last one
-    int xpin;
-    int ypin;
+void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
 
-    width=X2-X1;
-    height=Y2-Y1;
-    WNAX=width/OMEGA;
-    WNAY=height/OMEGA;
-    xpin=X1;
-    ypin=Y1;
+    OMEGA = graph->omega;
+    int width = X2-X1;
+    int height = Y2-Y1;
+    int WNAX = width/OMEGA;    //  window numbers along x without the last one
+    int WNAY = height/OMEGA;   //  window numbers along y without the last one
+    int xpin = X1;
+    int ypin = Y1;
     Window*** win = new Window** [WNAY];
     for( int i=0 ; i<WNAY ; i++ ){
         win[i] = new Window* [WNAX];
@@ -436,7 +430,7 @@ void Map::gdColor(){
 }
 
 void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
-	int xpin1;
+	 int xpin1;
     int ypin1;
     int xpin2;
     int ypin2;
