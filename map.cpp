@@ -282,7 +282,7 @@ bool Map::CheckSharing( Group* g, Window* w ){
     return check;
 }
 
-int Map::numberofWindow(Donegroup& dg, Group* g){
+int Map::numberofGroup(Donegroup& dg, Group* g){
     int pos[4];
     getWindowNumber(dg, g, pos);
     groups[0]->setGref2();
@@ -424,7 +424,7 @@ void Map::gdColor(){
 	    for(;j<n&&j<i+n/range+1;++j){			
 	        if(!groups[j]->isGref()){
                 notexist=false;
-                int num=numberofWindow(dg, groups[j]);
+                int num=numberofGroup(dg, groups[j]);
                 if(num<maxnum) break;
                 else if(num<maxnumtemp){
                     jtemp=j;
