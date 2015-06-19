@@ -98,9 +98,10 @@ int main(int argc, char* argv[])
     //////////// find the solution ////
     
     Map map(&graph);
-    map.makeGroup();   // make group and color
-    map.CreatWindow(x1, x2, y1, y2);
-    map.gdColor();
+    map.makeGroup();   // make group and color    
+    map.InitXY();
+    map.CreatWindow();
+//    map.gdColor();
 
     //////////// write the output file ///////////
         

@@ -60,8 +60,12 @@ class Map {
    public:
       Map(Graph* g) { graph = g; }
       ~Map();
-      int  OMEGA;
-      void CreatWindow( int& X1, int& X2, int& Y1, int& Y2 );
+      int OMEGA;
+      int X1;
+      int X2;
+      int Y1;
+      int Y2;
+      void CreatWindow();
       void makeGroup();
       void linkGW();
       bool CheckSharing( Group* g, Window* w );
@@ -70,6 +74,10 @@ class Map {
       void sortByeffect();
       void gdColor();
       void getWindowNumber(Donegroup& dg, Group* g, int* result);
+      void InitEffect();
+      void InitXY();
+      int MinMax( vector<int>& v, int& skip );
+      
 
    private:
       Graph* graph;

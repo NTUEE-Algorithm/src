@@ -121,15 +121,15 @@ void Window::setGref()
     gref++;
 }
 
-void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
+void Map::CreatWindow(){
 
     OMEGA = graph->omega;
-    int width = X2-X1;
+    int width  = X2-X1;
     int height = Y2-Y1;
-    int WNAX = width/OMEGA;    //  window numbers along x without the last one
-    int WNAY = height/OMEGA;   //  window numbers along y without the last one
-    int xpin = X1;
-    int ypin = Y1;
+    int WNAX   = width/OMEGA;    //  window numbers along x without the last one
+    int WNAY   = height/OMEGA;   //  window numbers along y without the last one
+    int xpin   = X1;
+    int ypin   = Y1;
     Window*** win;
     
     if( width%OMEGA!=0 && height%OMEGA!=0 ){
@@ -211,27 +211,73 @@ void Map::makeGroup()
     }
 }
 
-int MinMax( vector<int>& v ){
+void Map::InitXY(){
+    size_t Glength=groups.size();
+    int xpin1=numeric_limits<int>::max();
+    int ypin1=numeric_limits<int>::max();
+    int xpin2=0;
+    int ypin2=0;
+    for( int i=0 ; i<Glength ; ++i ){
+        if((groups[i]->x1)<xpin1) xpin1=(groups[i]->x1);
+        if((groups[i]->y1)<ypin1) ypin1=(groups[i]->y1);
+        if((groups[i]->x2)>xpin2) xpin2=(groups[i]->x2);
+        if((groups[i]->y2)>ypin2) ypin2=(groups[i]->y2);
+    }
+    for( int i=0 ; i<Glength ; ++i ){
+        (groups[i]->x1)=(groups[i]->x1)-xpin1;
+        (groups[i]->y1)=(groups[i]->y1)-ypin1;
+        (groups[i]->x2)=(groups[i]->x2)-xpin1;
+        (groups[i]->y2)=(groups[i]->y2)-ypin1;
+    }
+    X1=0;
+    Y1=0;
+    X2=xpin2-xpin1;
+    Y2=ypin2-ypin1;  
+}
+
+void Map::InitEffect(){
+    OMEGA = graph->omega;       //  can be delete if OMEGA is already set
+    int WNAX = (X2-X1)/OMEGA;   //  window numbers along x without the last one
+    int WNAY = (Y2-Y1)/OMEGA;   //  window numbers along y without the last one
+    if( (X2-X1)%OMEGA!=0 ) ++WNAX;
+    if( (Y2-Y1)%OMEGA!=0 ) ++WNAY;
+    for( int i=0 ; i<WNAX ; ++i ){
+        for( int j=0 ; j<WNAY ; ++j ){
+            size_t ColorLength=windows[i][j]->color.size();
+            Window* w=windows[i][j];
+            for( int k=0 ; k<ColorLength ; ++k )
+                (w->wgroups[k]->effect)=(w->wgroups[k]->effect)+MinMax(w->color, k);           
+        }
+    }
+}
+
+int Map::MinMax( vector<int>& v, int& skip ){
     size_t pow = v.size();
-    int MinCompare=100000;
+    int MinCompare=numeric_limits<int>::max();
     int MaxCompare=0;
     int counter=1;
     int temp=0;
     int sum=0;
-    for( int i=0 ; i<pow-1 ; i++ ){
+    for( int i=0 ; i<pow-2 ; ++i ){
         counter=counter*2;
     }
-    for( int i=0 ; i<counter ; i++ ){
+    for( int i=0 ; i<counter ; ++i ){
         temp=i;
         sum=0;
-        for( int j=0 ; j<pow ; j++ ){
-            if(temp%2)
-                sum=sum+v[j];
-            else
-                sum=sum-v[j];
-            temp=temp/2;
+        for( int j=0 ; j<pow ; ++j ){
+            if(j!=skip){
+                if(temp&1) sum=sum+v[j];      
+                else       sum=sum-v[j];
+                temp=temp>>1;  
+            }
+            else{               
+                ++j;
+                if(j==pow) break;
+                if(temp&1) sum=sum+v[j];
+                else       sum=sum-v[j];
+                temp=temp>>1;         
+            }
         }
-        cout << sum << endl;
         if(sum<0)
             sum=-sum;
         if(sum<MinCompare)
