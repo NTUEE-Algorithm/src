@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
     map.makeGroup();   // make group and color    
     map.InitXY();
     map.CreatWindow();
-//    map.gdColor();
+    map.gdColor();
 
     //////////// write the output file ///////////
         

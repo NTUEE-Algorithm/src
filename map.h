@@ -61,10 +61,8 @@ class Map {
       Map(Graph* g) { graph = g; }
       ~Map();
       int OMEGA;
-      int X1;
-      int X2;
-      int Y1;
-      int Y2;
+      int X2;   //boundary
+      int Y2;   //boundary
       void CreatWindow();
       void makeGroup();
       void linkGW();
