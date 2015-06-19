@@ -24,7 +24,6 @@ class Group {
       
       Node* head;
       vector<Node *> nodes;
-      Window*** gwindows;
       double effect;
       // pos
       //left down
