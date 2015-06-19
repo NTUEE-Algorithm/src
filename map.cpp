@@ -130,37 +130,60 @@ void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
     int WNAY = height/OMEGA;   //  window numbers along y without the last one
     int xpin = X1;
     int ypin = Y1;
-    Window*** win = new Window** [WNAY];
-    for( int i=0 ; i<WNAY ; i++ ){
-        win[i] = new Window* [WNAX];
+    
+    if( width%OMEGA!=0 && height%OMEGA!=0 ){
+        Window*** win = new Window** [WNAY+1];
+        for( int i=0 ; i<WNAY ; i++ )
+            win[i] = new Window* [WNAX+1];
     }
+    else if( width%OMEGA==0 && height%OMEGA!=0 ){
+        Window*** win = new Window** [WNAY+1];
+        for( int i=0 ; i<WNAY ; i++ )
+            win[i] = new Window* [WNAX];
+    }
+    else if( width%OMEGA!=0 && height%OMEGA==0 ){
+        Window*** win = new Window** [WNAY];
+        for( int i=0 ; i<WNAY ; i++ )
+            win[i] = new Window* [WNAX+1];
+    }
+    else if( width%OMEGA==0 && height%OMEGA==0 ){
+        Window*** win = new Window** [WNAY];
+        for( int i=0 ; i<WNAY ; i++ )
+            win[i] = new Window* [WNAX];
+    }
+    
 
     for( int i=0 ; i<WNAX ; i++ ){
         for( int j=0 ; j<WNAY ; j++ ){
-        	win[i][j] = new Window ( OMEGA, xpin, ypin );
-        	ypin=ypin+OMEGA;
+            win[i][j] = new Window ( OMEGA, xpin, ypin );
+            ypin=ypin+OMEGA;
         }
         xpin=xpin+OMEGA;
     }
 
-    xpin=X1;
-    ypin=Y2-OMEGA;
-    for( int i=0 ; i<WNAX ; i++ ){
-        win[i][WNAY] = new Window( OMEGA, xpin, ypin );
-        xpin=xpin+OMEGA;
+    if( width%OMEGA!=0 ){
+        xpin=X1;
+        ypin=Y2-OMEGA;
+        for( int i=0 ; i<WNAX ; i++ ){
+            win[i][WNAY] = new Window( OMEGA, xpin, ypin );
+            xpin=xpin+OMEGA;
+        }
     }
 
-    xpin=X2-OMEGA;
-    ypin=Y1;
-    for( int j=0 ; j<WNAY ; j++ ){
-        win[WNAX][j] = new Window( OMEGA, xpin, ypin );
-        ypin=ypin+OMEGA;
+    if( height%OMEGA!=0 ){
+        xpin=X2-OMEGA;
+        ypin=Y1;
+        for( int j=0 ; j<WNAY ; j++ ){
+            win[WNAX][j] = new Window( OMEGA, xpin, ypin );
+            ypin=ypin+OMEGA;
+        }
     }
 
-    xpin=X2-OMEGA;
-    ypin=Y2-OMEGA;
-    win[WNAX][WNAY] = new Window( OMEGA, xpin, ypin );
-    
+    if( width%OMEGA!=0 && height%OMEGA!=0 ){
+        xpin=X2-OMEGA;
+        ypin=Y2-OMEGA;
+        win[WNAX][WNAY] = new Window( OMEGA, xpin, ypin );
+    }
     windows = win;
 }
 
