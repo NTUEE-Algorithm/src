@@ -190,29 +190,25 @@ void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
 
 Map::~Map()
 {
-   for (size_t i=0; i<groups.size(); ++i)
-      delete groups[i];
+    for(size_t i=0; i<groups.size(); ++i) delete groups[i];
 }
 
 void Map::makeGroup()
 {
-   int pos[4];
-   size_t n = graph->getNumofNode();
-   graph->nodes[0]->setGref();
-   graph->nodes[0]->setGref2();
-   for(size_t i=0;i<n;++i)
-   {
-      Node* h = graph->nodes[i];
-      if(!h->isGref())
-      {
-          if(graph->coloring(h,pos))
-          {
-             Group* temp = new Group(h,pos);
-             groups.push_back(temp);
-             graph->setGroup(h, temp);
-          }else graph->markAll(h);
-      }
-   }
+    int pos[4];
+    size_t n = graph->getNumofNode();
+    graph->nodes[0]->setGref();
+    graph->nodes[0]->setGref2();
+    for(size_t i=0;i<n;++i){
+        Node* h = graph->nodes[i];
+        if(!h->isGref()){
+            if(graph->coloring(h,pos)){
+                Group* temp = new Group(h,pos);
+                groups.push_back(temp);
+                graph->setGroup(h, temp);
+            }else graph->markAll(h);
+        }
+    }
 }
 
 int MinMax( vector<int>& v ){
@@ -292,19 +288,21 @@ int Map::numberofWindow(Donegroup& dg, Group* g){
     groups[0]->setGref2();
     int sum=0;
 	
-    for(int i=pos[0];i<=pos[1];++i){
-        for(int j=pos[2];j<=pos[3];++j){
-	    Window* w=windows[i][j];
-	    size_t nmax=w->wgroups.size();
-	    for(size_t n=0;n<nmax;++n){
-	        if(!w->wgroups[n]->isGref()){
-		    if(!w->wgroups[n]->isGref2()){
-		        ++sum;
-			w->wgroups[n]->setToGref2();
-		    }
+    for(int i=pos[0];i<=pos[2];++i){
+        for(int j=pos[1];j<=pos[3];++j){
+            Window* w=windows[i][j];
+            if(!w->isGref()){
+                size_t nmax=w->wgroups.size();
+                for(size_t n=0;n<nmax;++n){
+	                if(!w->wgroups[n]->isGref()){
+                        if(!w->wgroups[n]->isGref2()){
+                            ++sum;
+                            w->wgroups[n]->setToGref2();
+                        }
+                    }
+	            }
 	        }
-	    }
-	}
+        }
     }
 	
     return sum;
@@ -312,24 +310,24 @@ int Map::numberofWindow(Donegroup& dg, Group* g){
 
 void Map::tryBest(Donegroup& dg, Group* g){
     int pos[4];
-    getWindowNumber(dg, g, pos);
+    getWindowNumber(dg,g,pos);
     groups[0]->setGref2();
     vector<Group*> gptr;
 	
-    for(int i=pos[0];i<=pos[1];++i){
-        for(int j=pos[2];j<=pos[3];++j){
-	    Window* w=windows[i][j];
-	    if(!w->isGref()){
-	        size_t nmax=w->wgroups.size();
-	        for(size_t n=0;n<nmax;++n){
-	            if(!w->wgroups[n]->isGref()){
-		        if(!w->wgroups[n]->isGref2()){
-		            gptr.push_back(w->wgroups[n]);
-	   	            w->wgroups[n]->setToGref2();
+    for(int i=pos[0];i<=pos[2];++i){
+        for(int j=pos[1];j<=pos[3];++j){
+            Window* w=windows[i][j];
+            if(!w->isGref()){
+                size_t nmax=w->wgroups.size();
+                for(size_t n=0;n<nmax;++n){
+                    if(!w->wgroups[n]->isGref()){
+                        if(!w->wgroups[n]->isGref2()){
+                            gptr.push_back(w->wgroups[n]);
+                            w->wgroups[n]->setToGref2();
                         }
                     }
-	        }
-	    }
+                }
+            }
         }
     }
 
@@ -348,35 +346,33 @@ void Map::tryBest(Donegroup& dg, Group* g){
     
     for(size_t m=0;m<mask[max-1];++m){
         groups[0]->setGref2();
-        for(size_t n=1;n<max;++n){
-           if((m&mask[n-1])>>n) gptr[n]->setToGref2();
-	}	
+        for(size_t n=1;n<max;++n) if((m&mask[n-1])>>n) gptr[n]->setToGref2();
 
         int colordiff=0;	
-	for(int i=pos[0];i<=pos[1];++i){
-            for(int j=pos[2];j<=pos[3];++j){
-	        Window* w=windows[i][j];
-	        if(!w->isGref()){
-	            size_t nmax=w->wgroups.size();
-		    int wsum=0;
-	            for(size_t n=0;n<nmax;++n){
-	                if(w->wgroups[n]->isGref()){
-	                    if(w->wgroups[n]->rev)  wsum-=w->color[n];
-	                    else  wsum+=w->color[n];
-	                }else{
-	                    if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
+        for(int i=pos[0];i<=pos[2];++i){
+            for(int j=pos[1];j<=pos[3];++j){
+                Window* w=windows[i][j];
+                if(!w->isGref()){
+                    size_t nmax=w->wgroups.size();
+                    int wsum=0;
+                    for(size_t n=0;n<nmax;++n){
+                        if(w->wgroups[n]->isGref()){
+                            if(w->wgroups[n]->rev)  wsum-=w->color[n];
+                            else  wsum+=w->color[n];
+                        }else{
+                            if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
                             else wsum-=w->color[n];
-	                }
-	            }
-	            if(wsum<0)wsum=-wsum;
-		    colordiff+=wsum;
-	        }
-	    }
+                        }
+                    }
+                    if(wsum<0)wsum=-wsum;
+                    colordiff+=wsum;
+                }
+            }
         }
 		
         if(colordiff<mincolordiff){
             best=m;
-	    mincolordiff=colordiff;
+            mincolordiff=colordiff;
         }
     }
 
@@ -394,11 +390,9 @@ void Map::tryBest(Donegroup& dg, Group* g){
         gptr[n]->setToGref();
     }
     
-    for(int i=pos[0];i<=pos[1];++i){
-        for(int j=pos[2];j<=pos[3];++j){
-	    windows[i][j]->setToGref();
-        }
-    }
+    for(int i=pos[0];i<=pos[1];++i)
+        for(int j=pos[2];j<=pos[3];++j) 
+            windows[i][j]->setToGref();
 }
 
 bool effectCompare(Group* g1, Group* g2){
@@ -423,38 +417,37 @@ void Map::gdColor(){
 
     for(size_t i=1;i<n;){
         size_t j=i;
-	size_t jtemp=i;
-	int maxnumtemp = numeric_limits<int>::max();
-	bool notexist=true;
-		
-	for(;j<n&&j<i+n/range;++j){
-	    if(groups[j]->isGref()){
+	    size_t jtemp=i;
+	    int maxnumtemp = numeric_limits<int>::max();
+	    bool notexist=true;
+    
+	    for(;j<n&&j<i+n/range+1;++j){			
+	        if(!groups[j]->isGref()){
                 notexist=false;
-		int num=numberofWindow(dg, groups[j]);
-	        if(num<maxnum) break;
-	        else if(num<maxnumtemp){
-	            jtemp=j;
-	            maxnumtemp=num;
-		}
-	        if(j==n-1){
-		    j=jtemp;
-		    maxnum=maxnumtemp;
-		    break;
-	        }
-	    }
-	}
-	if(notexist){
-            i=(n>i+n/range)?i+n/range :n;
-	}else{
+                int num=numberofWindow(dg, groups[j]);
+	            if(num<maxnum) break;
+	            else if(num<maxnumtemp){
+	                jtemp=j;
+	                maxnumtemp=num;
+		        }
+	            if(j==n-1||j==i+n/range){
+		            j=jtemp;
+		            maxnum=maxnumtemp;
+		            break;
+	            }
+            }
+        }
+        if(notexist) i=(n>i+n/range+1)?i+n/range+1 :n;
+        else{
             if(i==j) ++i;
-	    tryBest(dg, groups[j]);
-	    dg.update(groups[j]);
-	}
+	        tryBest(dg, groups[j]);
+	        dg.update(groups[j]);
+        }
     }
 }
 
 void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
-	 int xpin1;
+    int xpin1;
     int ypin1;
     int xpin2;
     int ypin2;
