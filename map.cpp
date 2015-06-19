@@ -342,8 +342,6 @@ void Map::tryBest(Donegroup& dg, Group* g){
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
     
-    windows[0][0]->setGref();
-    
     for(size_t m=0;m<mask[max-1];++m){
         groups[0]->setGref2();
         for(size_t n=1;n<max;++n) if((m&mask[n-1])>>n) gptr[n]->setToGref2();
@@ -406,6 +404,7 @@ void Map::sortByeffect(){
 void Map::gdColor(){
     sortByeffect();
     groups[0]->setGref();
+    windows[0][0]->setGref();
 	
     int maxnum=10;
     int range=10;
