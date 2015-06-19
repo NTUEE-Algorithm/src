@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <limits> 
 #include "graph.h"
 #include "map.h"
 
@@ -55,6 +56,9 @@ int main(int argc, char* argv[])
     
     // parse nodes
     int coordinate[4], count = 0, id = 0;
+    int x1, x2, y1, y2;   // limits of map
+    x1 = y1 = std::numeric_limits<int>::max();
+    x2 = y2 = std::numeric_limits<int>::min(); 
     string tok;
     while (getline(input, buf)) {
         pos = 0;
@@ -62,7 +66,23 @@ int main(int argc, char* argv[])
         ++id;
         while (pos != string::npos) {
             pos = myStrGetTok(buf, tok, pos);
-            coordinate[count] = atoi(tok.c_str());
+            int n = atoi(tok.c_str());
+            coordinate[count] = n;
+            switch (count) 
+            {
+               case 0:
+                  if (n<x1) x1 = n;
+                  break;
+               case 1:
+                  if (n<y1) y1 = n;
+                  break;               
+               case 2:
+                  if (n>x2) x2 = n;
+                  break;               
+               case 3:
+                  if (n>y2) y2 = n;
+                  break;                                         
+            }
             ++count;
         }
         Node* newNode = new Node(id, coordinate);
@@ -79,10 +99,8 @@ int main(int argc, char* argv[])
     
     Map map(&graph);
     map.makeGroup();   // make group and color
-
-    
-    
-
+    map.CreatWindow(x1, x2, y1, y2);
+    map.gdColor();
 
     //////////// write the output file ///////////
         
@@ -103,4 +121,3 @@ int main(int argc, char* argv[])
     output.close();
     return 0;
 }
-
