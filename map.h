@@ -65,7 +65,7 @@ class Map {
       void makeGroup();
       void linkGW();
       bool CheckSharing( Group* g, Window* w );
-      int  numberofWindow(Donegroup& dg, Group* g);
+      int  numberofGroup(Donegroup& dg, Group* g);
       void tryBest(Donegroup& dg, Group* g);
       void sortByeffect();
       void gdColor();
