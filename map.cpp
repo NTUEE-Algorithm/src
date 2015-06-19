@@ -161,7 +161,7 @@ void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
         xpin=xpin+OMEGA;
     }
 
-    if( width%OMEGA!=0 ){
+    if( height%OMEGA!=0 ){
         xpin=X1;
         ypin=Y2-OMEGA;
         for( int i=0 ; i<WNAX ; i++ ){
@@ -170,7 +170,7 @@ void Map::CreatWindow( int& X1, int& X2, int& Y1, int& Y2 ){
         }
     }
 
-    if( height%OMEGA!=0 ){
+    if( width%OMEGA!=0 ){
         xpin=X2-OMEGA;
         ypin=Y1;
         for( int j=0 ; j<WNAY ; j++ ){
