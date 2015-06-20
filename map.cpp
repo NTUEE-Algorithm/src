@@ -393,7 +393,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
     
     for(size_t m=0;m<mask[max-1];++m){
         groups[0]->setGref2();
-        for(size_t n=1;n<max;++n) if((m&mask[n-1])>>n) gptr[n]->setToGref2();
+        for(size_t n=1;n<max;++n) if(m&mask[n-1]) gptr[n]->setToGref2();
 
         int colordiff=0;	
         for(int i=pos[0];i<=pos[2];++i){
