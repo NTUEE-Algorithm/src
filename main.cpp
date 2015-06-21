@@ -101,6 +101,10 @@ int main(int argc, char* argv[])
     map.makeGroup();   // make group and color    
     map.InitXY();
     map.CreatWindow();
+    map.linkGW();
+    map.BuildAllColor();
+    map.InitEffect();
+
     map.gdColor();
 
     //////////// write the output file ///////////

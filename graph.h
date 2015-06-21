@@ -40,7 +40,7 @@ class Node{
 		void setGref2();
 
 		int id;
-      		int color;
+      	int color;
 		int x1;
 		int y1;
 		int x2;

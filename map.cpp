@@ -103,6 +103,8 @@ void Window::BuildColor(){
               else
                   sum=sum-area;
         }
+        color.push_back(sum);
+
     }
 }
 
@@ -237,6 +239,18 @@ void Map::InitXY(){
     X2=xpin2-xpin1;
     Y2=ypin2-ypin1;  
 }
+void Map::BuildAllColor(){
+    OMEGA = graph->omega;       //  can be delete if OMEGA is already set
+    int WNAX = (X2)/OMEGA;   //  window numbers along x without the last one
+    int WNAY = (Y2)/OMEGA;   //  window numbers along y without the last one
+    if( (X2)%OMEGA!=0 ) ++WNAX;
+    if( (Y2)%OMEGA!=0 ) ++WNAY;
+    for( int i=0 ; i<WNAX ; ++i ){
+        for( int j=0 ; j<WNAY ; ++j ){
+            windows[i][j]->BuildColor();        
+        }
+    }
+}
 
 void Map::InitEffect(){
     OMEGA = graph->omega;       //  can be delete if OMEGA is already set
@@ -261,6 +275,9 @@ int Map::MinMax( vector<int>& v, int& skip ){
     int MinCompare=numeric_limits<int>::max();
     int MaxCompare=0;
     int sum=0;
+    
+    if( pow==1 )
+        return 0;
 
     size_t* mask=new size_t[pow];
     mask[0]=1;
@@ -374,6 +391,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
                             w->wgroups[n]->setToGref2();
                         }
                     }
+                    
                 }
             }
         }
@@ -386,10 +404,9 @@ void Map::tryBest(Donegroup& dg, Group* g){
     for(size_t n=1;n<max;++n){
         mask[n]=mask[n-1]<<1;
     }
-	
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
-    
+
     for(size_t m=0;m<mask[max-1];++m){
         groups[0]->setGref2();
         for(size_t n=1;n<max;++n) if(m&mask[n-1]) gptr[n]->setToGref2();
@@ -415,7 +432,6 @@ void Map::tryBest(Donegroup& dg, Group* g){
                 }
             }
         }
-		
         if(colordiff<mincolordiff){
             best=m;
             mincolordiff=colordiff;
@@ -427,7 +443,6 @@ void Map::tryBest(Donegroup& dg, Group* g){
     for(size_t n=0;n<max;++n){
         if((best&mask[n-1])>>n) gptr[n]->setToGref2();
     }	
-
     for(size_t n=0;n<max;++n){
         if(!gptr[n]->isGref2()){
             gptr[n]->reverse();
@@ -435,7 +450,6 @@ void Map::tryBest(Donegroup& dg, Group* g){
         }
         gptr[n]->setToGref();
     }
-    
     for(int i=pos[0];i<=pos[1];++i)
         for(int j=pos[2];j<=pos[3];++j) 
             windows[i][j]->setToGref();
@@ -468,7 +482,7 @@ void Map::gdColor(){
 	    int maxnumtemp = numeric_limits<int>::max();
 	    bool notexist=true;
     
-	    for(;j<n&&j<i+n/range+1;++j){			
+	    for(;j<n&&j<i+n/range+1;++j){	
 	        if(!groups[j]->isGref()){
                 notexist=false;
                 int num=numberofGroup(dg, groups[j]);

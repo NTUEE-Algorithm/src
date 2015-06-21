@@ -1,7 +1,7 @@
 AR       := ar
 ARFLAGS  := cr
 CXX      := g++
-CPPFLAGS := -O2 -I../lib
+CPPFLAGS := -g -O0 -I../lib
 
 all : ../bin/DPT_balance_color
 	@echo -n ""

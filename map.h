@@ -74,6 +74,7 @@ class Map {
       void getWindowNumber(Donegroup& dg, Group* g, int* result);
       void InitEffect();
       void InitXY();
+      void BuildAllColor();
       int MinMax( vector<int>& v, int& skip );
       
 
