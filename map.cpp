@@ -256,29 +256,28 @@ void Map::InitEffect(){
 
 int Map::MinMax( vector<int>& v, int& skip ){
     size_t pow = v.size();
+    size_t counter=1;
+    size_t temp=0;
     int MinCompare=numeric_limits<int>::max();
     int MaxCompare=0;
-    int counter=1;
-    int temp=0;
     int sum=0;
-    for( int i=0 ; i<pow-2 ; ++i ){
-        counter=counter*2;
-    }
-    for( int i=0 ; i<counter ; ++i ){
-        temp=i;
+
+    size_t* mask=new size_t[pow];
+    mask[0]=1;
+    for( size_t i=1 ; i<pow-1 ; ++i )
+        mask[i]=mask[i-1]<<1;
+
+    for( size_t i=0 ; i<pow-2 ; ++i )
+        counter=counter<<1;
+    
+    for( size_t i=0 ; i<counter ; ++i ){
         sum=0;
-        for( int j=0 ; j<pow ; ++j ){
+        temp=0;
+        for( size_t j=0 ; j<pow ; ++j ){
             if(j!=skip){
-                if(temp&1) sum=sum+v[j];      
-                else       sum=sum-v[j];
-                temp=temp>>1;  
-            }
-            else{               
-                ++j;
-                if(j==pow) break;
-                if(temp&1) sum=sum+v[j];
-                else       sum=sum-v[j];
-                temp=temp>>1;         
+                if(i&mask[temp]) sum=sum+v[j];      
+                else             sum=sum-v[j];
+                ++temp; 
             }
         }
         if(sum<0)
