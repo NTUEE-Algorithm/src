@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <limits>
 
-//test clone//
-
 using namespace std;
 int Group::gref = 0;
 int Group::gref2 = 0;
