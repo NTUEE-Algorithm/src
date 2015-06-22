@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <limits>
+#include <fstream>
 
 using namespace std;
 int Group::gref = 0;
@@ -74,9 +75,9 @@ void Window::BuildColor(){
     int effy1;
     int effy2;
     int area=0;
-    int sum=0;
     size_t length_g=wgroups.size();
     for( int i=0 ; i<length_g ; i++ ){
+        int sum=0;
         size_t length_n=wgroups[i]->nodes.size();
         for( int j=0 ; j<length_n ; j++ ){
               if( wgroups[i]->nodes[j]->x1 > WX+OMEGA )
@@ -89,15 +90,23 @@ void Window::BuildColor(){
                   continue;
               if( wgroups[i]->nodes[j]->x1 < WX )
                   effx1=WX;
+              else
+                  effx1=wgroups[i]->nodes[j]->x1;
               if( wgroups[i]->nodes[j]->x2 > WX+OMEGA )
                   effx2=WX+OMEGA;
+              else
+                  effx2=wgroups[i]->nodes[j]->x2;
               if( wgroups[i]->nodes[j]->y1 < WY )
                   effy1=WY;
+              else
+                  effy1=wgroups[i]->nodes[j]->y1;
               if( wgroups[i]->nodes[j]->y2 > WY+OMEGA )
                   effy2=WY+OMEGA;
-              
+              else
+                  effy2=wgroups[i]->nodes[j]->y2;
+                
               area=(effx2-effx1)*(effy2-effy1);
-
+             
               if( wgroups[i]->nodes[j]->color )
                   sum=sum+area;
               else
@@ -223,6 +232,8 @@ void Map::InitXY(){
         if((groups[i]->x2)>xpin2) xpin2=(groups[i]->x2);
         if((groups[i]->y2)>ypin2) ypin2=(groups[i]->y2);
     }
+    X1 = xpin1;
+    Y1 = ypin1;
     for( size_t i=0 ; i<Glength ; ++i ){        
         (groups[i]->x1)=(groups[i]->x1)-xpin1;
         (groups[i]->y1)=(groups[i]->y1)-ypin1;
@@ -530,4 +541,37 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
         result[3]=ypin2/OMEGA-1;
     else
         result[3]=ypin2/OMEGA;
+}
+
+void Map::printFile(fstream& output)
+{
+    int count = 1;
+    for (size_t i=0; windows[i] != '\0'; ++i) 
+        for (size_t j=0; windows[i][j] != '\0'; ++j) {
+            output << "WIN[" << count << "]=";
+            windows[i][j]->print(output, this);
+            ++count;
+        }
+    for (size_t i=0; i<groups.size(); ++i) {
+        output << "GROUP" << endl;
+        /*
+        for (size_t j=0; groups[]; ++j)
+        output << "NO[";
+        */
+    }
+    /*
+    for (size_t i=0; i<graph->nodes.size(); ++i)
+        output << graph->nodesMap[i+1]->color<<endl;
+*/
+}
+
+void Window::print(fstream& output, Map* map)
+{
+    double sum = 0;
+    for (size_t i=0; i<color.size(); ++i) {
+       cout << color[i] << endl;
+       sum += color[i];
+    }
+    output << WX+map->X1 << "," << WY+map->Y1 << ", " << WX+OMEGA+map->X1 
+           << "," << WY+OMEGA+map->Y1 << ",(" << sum << ")" << WX << " " << WY << endl;
 }
