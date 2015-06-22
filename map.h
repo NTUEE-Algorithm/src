@@ -2,12 +2,14 @@
 #define MAP_H
 
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
 class Window;
 class Graph;
 class Node;
+class Map;
 class Donegroup;
 
 class Group {
@@ -47,6 +49,8 @@ class Window {
       int OMEGA;
       vector<Group*> wgroups;
       vector<int> color;
+      vector<int> color1;
+      vector<int> color2;
       void BuildColor();
       
       bool isGref();
@@ -54,6 +58,7 @@ class Window {
       void setGref();
       int ref;
       static int gref;
+      void print(fstream& output, Map* map);
 };
 
 class Map {
@@ -61,6 +66,8 @@ class Map {
       Map(Graph* g) { graph = g; }
       ~Map();
       int OMEGA;
+      int X1;
+      int Y1;
       int X2;   //boundary
       int Y2;   //boundary
       void CreatWindow();
@@ -75,8 +82,8 @@ class Map {
       void InitEffect();
       void InitXY();
       void BuildAllColor();
-      int MinMax( vector<int>& v, int& skip );
-      
+      int  MinMax( vector<int>& v, int& skip );
+      void printFile(fstream& output);
 
    private:
       Graph* graph;
