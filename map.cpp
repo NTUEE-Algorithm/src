@@ -545,19 +545,45 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
 
 void Map::printFile(fstream& output)
 {
+    int xNum, yNum;
+    if (!X2%OMEGA)
+        xNum = X2/OMEGA;
+    else
+        xNum = X2/OMEGA + 1;
+    if (!Y2%OMEGA)
+        yNum = Y2/OMEGA;
+    else
+        yNum = Y2/OMEGA + 1;    
     int count = 1;
-    for (size_t i=0; windows[i] != '\0'; ++i) 
-        for (size_t j=0; windows[i][j] != '\0'; ++j) {
+    for (int i=0; i<xNum; ++i) 
+        for (int j=0; j<yNum; ++j) {
             output << "WIN[" << count << "]=";
             windows[i][j]->print(output, this);
             ++count;
         }
     for (size_t i=0; i<groups.size(); ++i) {
         output << "GROUP" << endl;
-        /*
-        for (size_t j=0; groups[]; ++j)
-        output << "NO[";
-        */
+        vector<Node*> CA;
+        vector<Node*> CB;
+        for (size_t j=0; j<groups[i]->nodes.size(); ++j)
+            if (groups[i]->nodes[j]->color==0)
+                if (groups[i]->rev)
+                    CB.push_back(groups[i]->nodes[j]);
+                else
+                    CA.push_back(groups[i]->nodes[j]);
+            else
+                if (groups[i]->rev)
+                    CA.push_back(groups[i]->nodes[j]);
+                else
+                    CB.push_back(groups[i]->nodes[j]);
+        for (size_t j=0; j<CA.size(); ++j)
+            output << "CA[" << j+1 << "]=" 
+                   << CA[j]->x1+X1 << "," << CA[j]->y1+Y1 << "," 
+                   << CA[j]->x2+X1 << "," << CA[j]->y2+Y1 << endl;
+        for (size_t j=0; j<CB.size(); ++j)
+            output << "CB[" << j+1 << "]=" 
+                   << CB[j]->x1+X1 << "," << CB[j]->y1+Y1 << "," 
+                   << CB[j]->x2+X1 << "," << CB[j]->y2+Y1 << endl;                   
     }
     /*
     for (size_t i=0; i<graph->nodes.size(); ++i)
@@ -569,9 +595,8 @@ void Window::print(fstream& output, Map* map)
 {
     double sum = 0;
     for (size_t i=0; i<color.size(); ++i) {
-       cout << color[i] << endl;
        sum += color[i];
     }
     output << WX+map->X1 << "," << WY+map->Y1 << ", " << WX+OMEGA+map->X1 
-           << "," << WY+OMEGA+map->Y1 << ",(" << sum << ")" << WX << " " << WY << endl;
+           << "," << WY+OMEGA+map->Y1 << "(" << sum << ")" << endl;
 }
