@@ -140,39 +140,38 @@ void Window::setGref()
 }
 
 void Map::CreatWindow(){
-
     OMEGA = graph->omega;
-    int WNAX   = X2/OMEGA;    //  window numbers along x without the last one
-    int WNAY   = Y2/OMEGA;   //  window numbers along y without the last one
+    int WNAX_2   = X2/OMEGA;   //  window numbers along x without the last one
+    int WNAY_2   = Y2/OMEGA;   //  window numbers along y without the last one
     int xpin   = 0;
     int ypin   = 0;
     Window*** win;
     
     if( X2%OMEGA!=0 && Y2%OMEGA!=0 ){
-        win = new Window** [WNAX+1];
-        for( int i=0 ; i<WNAX+1 ; ++i )
-            win[i] = new Window* [WNAY+1];
+        win = new Window** [WNAX_2+1];
+        for( int i=0 ; i<WNAX_2+1 ; ++i )
+            win[i] = new Window* [WNAY_2+1];
     }
     else if( X2%OMEGA==0 && Y2%OMEGA!=0 ){
-        win = new Window** [WNAX];
-        for( int i=0 ; i<WNAX ; ++i )
-            win[i] = new Window* [WNAY+1];
+        win = new Window** [WNAX_2];
+        for( int i=0 ; i<WNAX_2 ; ++i )
+            win[i] = new Window* [WNAY_2+1];
     }
     else if( X2%OMEGA!=0 && Y2%OMEGA==0 ){
-        win = new Window** [WNAX+1];
-        for( int i=0 ; i<WNAX+1 ; ++i )
-            win[i] = new Window* [WNAY];
+        win = new Window** [WNAX_2+1];
+        for( int i=0 ; i<WNAX_2+1 ; ++i )
+            win[i] = new Window* [WNAY_2];
     }
     else if( X2%OMEGA==0 && Y2%OMEGA==0 ){
-        win = new Window** [WNAX];
-        for( int i=0 ; i<WNAX ; ++i )
-            win[i] = new Window* [WNAY];
+        win = new Window** [WNAX_2];
+        for( int i=0 ; i<WNAX_2 ; ++i )
+            win[i] = new Window* [WNAY_2];
     }
     
 
-    for( int i=0 ; i<WNAX ; ++i ){
+    for( int i=0 ; i<WNAX_2 ; ++i ){
         ypin=0;
-        for( int j=0 ; j<WNAY ; ++j ){
+        for( int j=0 ; j<WNAY_2 ; ++j ){
             win[i][j] = new Window ( OMEGA, xpin, ypin );
             ypin=ypin+OMEGA;
         }
@@ -182,8 +181,8 @@ void Map::CreatWindow(){
     if( Y2%OMEGA!=0 ){
         xpin=0;
         ypin=Y2-OMEGA;
-        for( int i=0 ; i<WNAX ; ++i ){
-            win[i][WNAY] = new Window( OMEGA, xpin, ypin );
+        for( int i=0 ; i<WNAX_2 ; ++i ){
+            win[i][WNAY_2] = new Window( OMEGA, xpin, ypin );
             xpin=xpin+OMEGA;
         }
     }
@@ -191,8 +190,8 @@ void Map::CreatWindow(){
     if( X2%OMEGA!=0 ){
         xpin=X2-OMEGA;
         ypin=0;
-        for( int j=0 ; j<WNAY ; ++j ){
-            win[WNAX][j] = new Window( OMEGA, xpin, ypin );
+        for( int j=0 ; j<WNAY_2 ; ++j ){
+            win[WNAX_2][j] = new Window( OMEGA, xpin, ypin );
             ypin=ypin+OMEGA;
         }
     }
@@ -200,7 +199,7 @@ void Map::CreatWindow(){
     if( X2%OMEGA!=0 && Y2%OMEGA!=0 ){
         xpin=X2-OMEGA;
         ypin=Y2-OMEGA;
-        win[WNAX][WNAY] = new Window( OMEGA, xpin, ypin );
+        win[WNAX_2][WNAY_2] = new Window( OMEGA, xpin, ypin );
     }
     windows = win;
 }
@@ -259,14 +258,14 @@ void Map::InitXY(){
         }
     }
     X2=xpin2-xpin1;
-    Y2=ypin2-ypin1;  
+    Y2=ypin2-ypin1;
+    WNAX = (X2)/OMEGA;   //  window numbers along x without the last one
+    WNAY = (Y2)/OMEGA;   //  window numbers along y without the last one
+    if( (X2)%OMEGA!=0 ) ++WNAX;
+    if( (Y2)%OMEGA!=0 ) ++WNAY;
 }
 void Map::BuildAllColor(){
     OMEGA = graph->omega;       //  can be delete if OMEGA is already set
-    int WNAX = (X2)/OMEGA;   //  window numbers along x without the last one
-    int WNAY = (Y2)/OMEGA;   //  window numbers along y without the last one
-    if( (X2)%OMEGA!=0 ) ++WNAX;
-    if( (Y2)%OMEGA!=0 ) ++WNAY;
     for( int i=0 ; i<WNAX ; ++i ){
         for( int j=0 ; j<WNAY ; ++j ){
             windows[i][j]->BuildColor();        
@@ -276,10 +275,6 @@ void Map::BuildAllColor(){
 
 void Map::InitEffect(){
     OMEGA = graph->omega;       //  can be delete if OMEGA is already set
-    int WNAX = (X2)/OMEGA;   //  window numbers along x without the last one
-    int WNAY = (Y2)/OMEGA;   //  window numbers along y without the last one
-    if( (X2)%OMEGA!=0 ) ++WNAX;
-    if( (Y2)%OMEGA!=0 ) ++WNAY;
     for( int i=0 ; i<WNAX ; ++i ){
         for( int j=0 ; j<WNAY ; ++j ){
             size_t ColorLength=windows[i][j]->color.size();
@@ -651,10 +646,6 @@ void Map::optSolver(){
     }
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
-    int WNAX = (X2)/OMEGA;
-    int WNAY = (Y2)/OMEGA;
-    if( (X2)%OMEGA!=0 ) ++WNAX;
-    if( (Y2)%OMEGA!=0 ) ++WNAY;
  
     for(size_t m=0;m<mask[max];++m){       
         groups[0]->setGref2();
