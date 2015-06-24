@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <limits>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 int Group::gref = 0;
@@ -218,8 +219,8 @@ void Map::makeGroup()
                 Group* temp = new Group(h,pos);
                 groups.push_back(temp);
                 graph->setGroup(h, temp);
-            }else{ 
-                //graph->markAll(h);
+            }else{
+     //           graph->markAll(h);
                 Group* temp = new Group(h,pos);
                 ngroups.push_back(temp);
                 graph->setGroup(h, temp);
@@ -563,12 +564,22 @@ void Map::printFile(fstream& output)
     else
         yNum = Y2/OMEGA + 1;    
     int count = 1;
-    for (int i=0; i<xNum; ++i) 
-        for (int j=0; j<yNum; ++j) {
+    for (int i=0; i<yNum; ++i) 
+        for (int j=0; j<xNum; ++j) {
             output << "WIN[" << count << "]=";
-            windows[i][j]->print(output, this);
+            windows[j][i]->print(output, this);
             ++count;
         }
+    for (size_t i=0; i<ngroups.size(); ++i) {
+        output << "GROUP" << endl;    
+        for (size_t j=0; j<ngroups[i]->nodes.size(); ++j)
+        {
+           output << "NO[" << j+1 << "]=" << ngroups[i]->nodes[j]->x1 << "," 
+                  << ngroups[i]->nodes[j]->y1 << "," << ngroups[i]->nodes[j]->x2 << ","
+                  << ngroups[i]->nodes[j]->y2 << endl;
+    
+        }
+    }
     for (size_t i=0; i<groups.size(); ++i) {
         output << "GROUP" << endl;
         vector<Node*> CA;
@@ -595,13 +606,20 @@ void Map::printFile(fstream& output)
 
 void Window::print(fstream& output, Map* map)
 {
-    double sum = 0;
+    double sum1 = 0, sum2 = 0;
     for (size_t i=0; i<color.size(); ++i) {
-       if (wgroups[i]->rev)
-           sum -= color[i];
-       else
-           sum += color[i];
+       cout << "!"<< color2[i] << endl;
+       if (wgroups[i]->rev) {
+           sum1 += color2[i];
+           sum2 += color1[i];    
+       }
+       else {
+           sum1 += color1[i];
+           sum2 += color2[i];    
+       }
     }
-    output << WX+map->X1 << "," << WY+map->Y1 << ", " << WX+OMEGA+map->X1 
-           << "," << WY+OMEGA+map->Y1 << "(" << sum << ")" << endl;
+    cout << sum1 << " " <<  sum2 << endl;
+    output << WX+map->X1 << "," << WY+map->Y1 << "," << WX+OMEGA+map->X1 
+           << "," << WY+OMEGA+map->Y1 << "(" << fixed << setprecision(2) << (sum1/OMEGA/OMEGA)*100 
+           << " " << fixed << setprecision(2) << (sum2/OMEGA/OMEGA)*100 << ")" << endl;
 }
