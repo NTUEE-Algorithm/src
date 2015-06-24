@@ -69,6 +69,8 @@ class Map {
       int OMEGA;
       int X1;
       int Y1;
+      int WNAX;
+      int WNAY;
       int X2;   //boundary
       int Y2;   //boundary
       void CreatWindow();
