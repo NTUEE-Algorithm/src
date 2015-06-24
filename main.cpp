@@ -96,7 +96,8 @@ int main(int argc, char* argv[])
         cout << "Error: File is not open!!" << endl;
         return 0;
     }
-    map.printFile(output);    
+    double score = map.printFile(output);
+    cout << score << endl;
 /*    
     output << "// used for debugging graph" << endl 
            << "graph {" << endl;   
