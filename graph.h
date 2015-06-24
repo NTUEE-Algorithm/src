@@ -73,7 +73,7 @@ class Graph{
 		
                 //use in Map::makeGroup()
                 size_t getNumofNode();
-                void coloring(Node* h, int* pos, vector<Node*>& nodes, bool& valid)
+                void coloring(Node* h, int* pos, vector<Node*>& nodes, bool& valid);
                 void markAll(Node* h);
                 void setGroup(Node* h, Group* g);
 
