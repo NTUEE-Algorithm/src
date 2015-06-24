@@ -265,6 +265,7 @@ void Graph::markAll(Node* h)
 
 void Graph::setGroup(Node* h,Group* g)
 {
+    h->setToGref();
     h->setToGref2();
     h->group = g;
     g->nodes.push_back(h);
