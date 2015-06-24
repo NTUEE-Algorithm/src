@@ -34,7 +34,7 @@ void Group::setToGref()
 
 void Group::setGref()
 {
-    gref++;
+    ++gref;
 }
 
 bool Group::isGref2()
@@ -49,7 +49,7 @@ void Group::setToGref2()
 
 void Group::setGref2()
 {
-    gref2++;
+    ++gref2;
 }
 
 void Group::reverse(){
@@ -164,6 +164,7 @@ void Map::CreatWindow(){
     
 
     for( int i=0 ; i<WNAX ; i++ ){
+        ypin=0;
         for( int j=0 ; j<WNAY ; j++ ){
             win[i][j] = new Window ( OMEGA, xpin, ypin );
             ypin=ypin+OMEGA;
@@ -324,7 +325,7 @@ void Map::linkGW(){
     int o;
     int p;
     size_t Glength=groups.size();
-    for( int h=0 ; h<Glength ; h++ ){
+    for( size_t h=0 ; h<Glength ; h++ ){
         m=(groups[h]->x1)/OMEGA;
         n=(groups[h]->y1)/OMEGA;
         if( (groups[h]->x2)%OMEGA==0 )
@@ -410,17 +411,17 @@ void Map::tryBest(Donegroup& dg, Group* g){
 
 //try all possibility
     size_t max=gptr.size();
-    size_t mask[max-1];
+    size_t mask[max+1];
     mask[0]=1;
-    for(size_t n=1;n<max;++n){
+    for(size_t n=1;n<max+1;++n){
         mask[n]=mask[n-1]<<1;
     }
     size_t best;
     int mincolordiff=numeric_limits<int>::max();
-
-    for(size_t m=0;m<mask[max-1];++m){
+ 
+    for(size_t m=0;m<mask[max];++m){       
         groups[0]->setGref2();
-        for(size_t n=1;n<max;++n) if(m&mask[n-1]) gptr[n]->setToGref2();
+        for(size_t n=0;n<max;++n) if(m&mask[n]) gptr[n]->setToGref2();
 
         int colordiff=0;	
         for(int i=pos[0];i<=pos[2];++i){
@@ -481,14 +482,14 @@ void Map::gdColor(){
 	
     int maxnum=10;
     int range=10;
-	
+	 
     size_t n=groups.size();
     
     groups[0]->setToGref();
     Donegroup dg(groups[0]);
 
     for(size_t i=1;i<n;){
-        size_t j=i;
+       size_t j=i;
 	    size_t jtemp=i;
 	    int maxnumtemp = numeric_limits<int>::max();
 	    bool notexist=true;
@@ -511,9 +512,9 @@ void Map::gdColor(){
         }
         if(notexist) i=(n>i+n/range+1)?i+n/range+1 :n;
         else{
-            if(i==j) ++i;
             tryBest(dg, groups[j]);
             dg.update(groups[j]);
+            if(groups[i]->isGref()) ++i;
         }
     }
 }
@@ -546,11 +547,11 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
 void Map::printFile(fstream& output)
 {
     int xNum, yNum;
-    if (!X2%OMEGA)
+    if (!(X2%OMEGA))
         xNum = X2/OMEGA;
     else
         xNum = X2/OMEGA + 1;
-    if (!Y2%OMEGA)
+    if (!(Y2%OMEGA))
         yNum = Y2/OMEGA;
     else
         yNum = Y2/OMEGA + 1;    
@@ -567,15 +568,9 @@ void Map::printFile(fstream& output)
         vector<Node*> CB;
         for (size_t j=0; j<groups[i]->nodes.size(); ++j)
             if (groups[i]->nodes[j]->color==0)
-                if (groups[i]->rev)
-                    CB.push_back(groups[i]->nodes[j]);
-                else
-                    CA.push_back(groups[i]->nodes[j]);
+                CA.push_back(groups[i]->nodes[j]);
             else
-                if (groups[i]->rev)
-                    CA.push_back(groups[i]->nodes[j]);
-                else
-                    CB.push_back(groups[i]->nodes[j]);
+                CB.push_back(groups[i]->nodes[j]);
         for (size_t j=0; j<CA.size(); ++j)
             output << "CA[" << j+1 << "]=" 
                    << CA[j]->x1+X1 << "," << CA[j]->y1+Y1 << "," 
@@ -595,7 +590,10 @@ void Window::print(fstream& output, Map* map)
 {
     double sum = 0;
     for (size_t i=0; i<color.size(); ++i) {
-       sum += color[i];
+       if (wgroups[i]->rev)
+           sum -= color[i];
+       else
+           sum += color[i];
     }
     output << WX+map->X1 << "," << WY+map->Y1 << ", " << WX+OMEGA+map->X1 
            << "," << WY+OMEGA+map->Y1 << "(" << sum << ")" << endl;
