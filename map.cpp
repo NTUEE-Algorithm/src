@@ -77,7 +77,8 @@ void Window::BuildColor(){
     int area=0;
     size_t length_g=wgroups.size();
     for( int i=0 ; i<length_g ; i++ ){
-        int sum=0;
+        int sum1=0;
+        int sum2=0;
         size_t length_n=wgroups[i]->nodes.size();
         for( int j=0 ; j<length_n ; j++ ){
               if( wgroups[i]->nodes[j]->x1 > WX+OMEGA )
@@ -108,12 +109,13 @@ void Window::BuildColor(){
               area=(effx2-effx1)*(effy2-effy1);
              
               if( wgroups[i]->nodes[j]->color )
-                  sum=sum+area;
+                  sum1=sum1+area;
               else
-                  sum=sum-area;
+                  sum2=sum2+area;
         }
-        color.push_back(sum);
-
+        color.push_back(sum1-sum2);
+        color1.push_back(sum1);
+        color2.push_back(sum2);
     }
 }
 
