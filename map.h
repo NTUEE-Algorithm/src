@@ -88,6 +88,7 @@ class Map {
    private:
       Graph* graph;
       vector<Group*> groups;
+      vector<Group*> ngroups;
       Window*** windows;
 };
 
