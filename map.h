@@ -85,6 +85,7 @@ class Map {
       void BuildAllColor();
       int  MinMax( vector<int>& v, int& skip );
       double printFile(fstream& output);
+      void optSolver();
 
    private:
       Graph* graph;
