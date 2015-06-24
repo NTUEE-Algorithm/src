@@ -75,7 +75,7 @@ void Node::setToGref()
 
 void Node::setGref()
 {
-    gref++;
+    ++gref;
 }
 
 bool Node::isGref2()
@@ -90,27 +90,27 @@ void Node::setToGref2()
 
 void Node::setGref2()
 {
-    gref2++;
+    ++gref2;
 }
 
 Graph::~Graph()
 {
     vector<Edge *>::iterator itE;
-    for ( itE = edges.begin() ; itE != edges.end() ; itE++ )
+    for ( itE = edges.begin() ; itE != edges.end() ; ++itE )
     {
         delete (*itE);
         (*itE) = 0;
     }
 	
     map<int, Node *>::iterator itN;
-    for ( itN = nodesMap.begin() ; itN != nodesMap.end() ; itN++ )
+    for ( itN = nodesMap.begin() ; itN != nodesMap.end() ; ++itN )
     {
         delete (*itN).second;
         (*itN).second = 0;
     }
 
     vector<Node *>::iterator itN2;
-    for ( itN2 = nodes.begin() ; itN2 != nodes.end() ; itN2++ )
+    for ( itN2 = nodes.begin() ; itN2 != nodes.end() ; ++itN2 )
     {
         (*itN2) = 0;
     }
@@ -128,7 +128,7 @@ void Graph::addEdge(Node* v1, Node* v2)
 void Graph::sortEdgesOfNode()
 {
 	map<int, Node *>::iterator it;
-	for ( it = nodesMap.begin() ; it != nodesMap.end() ; it++ )
+	for ( it = nodesMap.begin() ; it != nodesMap.end() ; ++it )
 	{
 		Node *node = (*it).second;
 		node->sortEdge();
@@ -199,7 +199,7 @@ void Graph::addEdgesInY()
 void Graph::init()
 {
 	map<int, Node *>::iterator itN;
-	for ( itN = nodesMap.begin() ; itN != nodesMap.end() ; itN++ )
+	for ( itN = nodesMap.begin() ; itN != nodesMap.end() ; ++itN )
 	{
 		Node *node = (*itN).second;
                 node->color = -1;
