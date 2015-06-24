@@ -342,24 +342,27 @@ void Map::linkGW(){
         //    check where the groups is    //
         if( (groups[h]->x2)%OMEGA==0 )
             o=(groups[h]->x2)/OMEGA-1;
-        else    
-            o=(groups[h]->x2)/OMEGA;
+        else{
+            if( (groups[h]->x2)>X2-OMEGA )
+                o=WNAX-1; 
+            else
+                o=(groups[h]->x2)/OMEGA;
+        } 
         if( (groups[h]->y2)%OMEGA==0 )
             p=(groups[h]->y2)/OMEGA-1;
-        else
-            p=(groups[h]->y2)/OMEGA;
-        //    check if the last window overlap    //
-        if( o==X2/OMEGA-1 )
-            if( (groups[h]->x2)>X2-OMEGA )
-                ++o;
-        if( p==Y2/OMEGA-1 )
+        else{
             if( (groups[h]->y2)>Y2-OMEGA )
-                ++p;
+                p=WNAY-1; 
+            else
+                p=(groups[h]->y2)/OMEGA;
+        }           
         //    Start linking    //
-        for( size_t i=m ; i<=o ; ++i )
-            for( size_t j=n ; j<=p ; ++j )
+        for( size_t i=m ; i<=o ; ++i ){
+            for( size_t j=n ; j<=p ; ++j ){
                 if( CheckSharing( groups[h], windows[i][j] ) )
                     windows[i][j]->wgroups.push_back(groups[h]);
+            }
+        }               
     }
 }
 
@@ -550,22 +553,23 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
     if( dg.y2 > g->y2 ) ypin2=dg.y2;
     else ypin2=g->y2;
     result[0]=(xpin1)/OMEGA;
-    result[1]=(ypin1)/OMEGA;
-    if( xpin2%OMEGA==0 )
-        result[2]=xpin2/OMEGA-1;
-    else    
-        result[2]=xpin2/OMEGA;
-    if( ypin2%OMEGA==0 )
-        result[3]=ypin2/OMEGA-1;
-    else
-        result[3]=ypin2/OMEGA;
-    
-    if( result[2]==X2/OMEGA-1 )
-        if( xpin2>X2-OMEGA )
-            ++result[2];
-    if( result[3]==Y2/OMEGA-1 )
-        if( ypin2>Y2-OMEGA )
-            ++result[3];
+    result[1]=(ypin1)/OMEGA; 
+    if( (xpin2)%OMEGA==0 )
+        result[2]=(xpin2)/OMEGA-1;
+    else{
+        if( (xpin2)>X2-OMEGA )
+            result[2]=WNAX-1; 
+        else
+            result[2]=(xpin2)/OMEGA;
+    }  
+    if( (ypin2)%OMEGA==0 )
+        p=(ypin2)/OMEGA-1;
+    else{
+        if( (ypin2)>Y2-OMEGA )
+            result[3]=WNAY-1; 
+        else
+            result[3]=(ypin2)/OMEGA;
+    } 
 }
 
 double Map::printFile(fstream& output)
