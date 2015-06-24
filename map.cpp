@@ -558,7 +558,7 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
             result[2]=(xpin2)/OMEGA;
     }  
     if( (ypin2)%OMEGA==0 )
-        p=(ypin2)/OMEGA-1;
+        result[3]=(ypin2)/OMEGA-1;
     else{
         if( (ypin2)>Y2-OMEGA )
             result[3]=WNAY-1; 
