@@ -637,3 +637,53 @@ double Window::print(fstream& output, Map* map)
            << " " << fixed << setprecision(2) << sum2 << ")" << endl;
     return abs(sum1-sum2);
 }
+
+void Map::optSolver(){
+    size_t max=groups.size()-1;
+    size_t mask[max+1];
+    mask[0]=1;
+    for(size_t n=1;n<max+1;++n){
+        mask[n]=mask[n-1]<<1;
+    }
+    size_t best;
+    int mincolordiff=numeric_limits<int>::max();
+    int WNAX = (X2)/OMEGA;
+    int WNAY = (Y2)/OMEGA;
+    if( (X2)%OMEGA!=0 ) ++WNAX;
+    if( (Y2)%OMEGA!=0 ) ++WNAY;
+ 
+    for(size_t m=0;m<mask[max];++m){       
+        groups[0]->setGref2();
+        for(size_t n=0;n<max;++n) if(m&mask[n]) groups[n]->setToGref2();
+
+        int colordiff=0;	
+        for(int i=0;i<WNAX;++i){
+            for(int j=0;j<WNAY;++j){
+                size_t nmax=w->wgroups.size();
+                int wsum=0;
+                for(size_t n=0;n<nmax;++n){
+                    if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
+                    else wsum-=w->color[n];    
+                }
+                if(wsum<0)wsum=-wsum;
+                colordiff+=wsum;
+            }
+        }
+        if(colordiff<mincolordiff){
+            best=m;
+            mincolordiff=colordiff;
+        }
+    }
+
+//set to the best choice
+    groups[0]->setGref2();
+    for(size_t n=0;n<max;++n){
+        if(best&mask[n]) groups[n]->setToGref2();
+    }	
+    for(size_t n=0;n<max;++n){
+        if(gptr[n]->isGref2()){
+            gptr[n]->reverse();
+            gptr[n]->rev=true;   
+        }
+    }
+}
