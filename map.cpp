@@ -5,6 +5,7 @@
 #include <limits>
 #include <fstream>
 #include <iomanip>
+#include <cmath>
 
 using namespace std;
 int Group::gref = 0;
@@ -565,7 +566,7 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
             ++result[3];
 }
 
-void Map::printFile(fstream& output)
+double Map::printFile(fstream& output)
 {
     int xNum, yNum;
     if (!(X2%OMEGA))
@@ -577,10 +578,11 @@ void Map::printFile(fstream& output)
     else
         yNum = Y2/OMEGA + 1;    
     int count = 1;
+    double score = 100;
     for (int i=0; i<yNum; ++i) 
         for (int j=0; j<xNum; ++j) {
             output << "WIN[" << count << "]=";
-            windows[j][i]->print(output, this);
+            score -= windows[j][i]->print(output, this);
             ++count;
         }
     for (size_t i=0; i<ngroups.size(); ++i) {
@@ -590,7 +592,6 @@ void Map::printFile(fstream& output)
            output << "NO[" << j+1 << "]=" << ngroups[i]->nodes[j]->x1 << "," 
                   << ngroups[i]->nodes[j]->y1 << "," << ngroups[i]->nodes[j]->x2 << ","
                   << ngroups[i]->nodes[j]->y2 << endl;
-    
         }
     }
     for (size_t i=0; i<groups.size(); ++i) {
@@ -611,13 +612,10 @@ void Map::printFile(fstream& output)
                    << CB[j]->x1+X1 << "," << CB[j]->y1+Y1 << "," 
                    << CB[j]->x2+X1 << "," << CB[j]->y2+Y1 << endl;                   
     }
-    /*
-    for (size_t i=0; i<graph->nodes.size(); ++i)
-        output << graph->nodesMap[i+1]->color<<endl;
-*/
+    return score;
 }
 
-void Window::print(fstream& output, Map* map)
+double Window::print(fstream& output, Map* map)
 {
     double sum1 = 0, sum2 = 0;
     for (size_t i=0; i<color.size(); ++i) {
@@ -630,7 +628,10 @@ void Window::print(fstream& output, Map* map)
            sum2 += color2[i];    
        }
     }
+    sum1 = (sum1/OMEGA/OMEGA)*100;
+    sum2 = (sum2/OMEGA/OMEGA)*100;
     output << WX+map->X1 << "," << WY+map->Y1 << "," << WX+OMEGA+map->X1 
-           << "," << WY+OMEGA+map->Y1 << "(" << fixed << setprecision(2) << (sum1/OMEGA/OMEGA)*100 
-           << " " << fixed << setprecision(2) << (sum2/OMEGA/OMEGA)*100 << ")" << endl;
+           << "," << WY+OMEGA+map->Y1 << "(" << fixed << setprecision(2) << sum1 
+           << " " << fixed << setprecision(2) << sum2 << ")" << endl;
+    return abs(sum1-sum2);
 }
