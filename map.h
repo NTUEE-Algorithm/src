@@ -14,7 +14,8 @@ class Donegroup;
 
 class Group {
    public:
-      Group(Node* h, int* pos);//do not handle anything about window
+      Group(Node* h);//do not handle anything about window
+      void setPos(int* pos);
       bool isGref();
       void setToGref();
       void setGref();
