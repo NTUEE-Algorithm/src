@@ -216,7 +216,12 @@ void Map::makeGroup()
                 Group* temp = new Group(h,pos);
                 groups.push_back(temp);
                 graph->setGroup(h, temp);
-            }else graph->markAll(h);
+            }else{ 
+                graph->markAll(h);
+                Group* temp = new Group(h,pos);
+                ngroups.push_back(temp);
+                graph->setGroup(h, temp);
+            }
         }
     }
 }
