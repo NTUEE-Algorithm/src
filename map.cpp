@@ -132,7 +132,7 @@ void Window::setToGref()
 
 void Window::setGref()
 {
-    gref++;
+    ++gref;
 }
 
 void Map::CreatWindow(){
@@ -161,7 +161,7 @@ void Map::CreatWindow(){
     }
     else if( X2%OMEGA==0 && Y2%OMEGA==0 ){
         win = new Window** [WNAX];
-        for( int i=0 ; i<WNAX ; i++ )
+        for( int i=0 ; i<WNAX ; ++i )
             win[i] = new Window* [WNAY];
     }
     
