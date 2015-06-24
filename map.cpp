@@ -78,11 +78,11 @@ void Window::BuildColor(){
     int effy2;
     int area=0;
     size_t length_g=wgroups.size();
-    for( int i=0 ; i<length_g ; i++ ){
+    for( int i=0 ; i<length_g ; ++i ){
         int sum1=0;
         int sum2=0;
         size_t length_n=wgroups[i]->nodes.size();
-        for( int j=0 ; j<length_n ; j++ ){
+        for( int j=0 ; j<length_n ; ++j ){
               if( wgroups[i]->nodes[j]->x1 > WX+OMEGA )
                   continue;
               if( wgroups[i]->nodes[j]->x2 < WX )
@@ -146,17 +146,17 @@ void Map::CreatWindow(){
     
     if( X2%OMEGA!=0 && Y2%OMEGA!=0 ){
         win = new Window** [WNAX+1];
-        for( int i=0 ; i<WNAX+1 ; i++ )
+        for( int i=0 ; i<WNAX+1 ; ++i )
             win[i] = new Window* [WNAY+1];
     }
     else if( X2%OMEGA==0 && Y2%OMEGA!=0 ){
         win = new Window** [WNAX];
-        for( int i=0 ; i<WNAX ; i++ )
+        for( int i=0 ; i<WNAX ; ++i )
             win[i] = new Window* [WNAY+1];
     }
     else if( X2%OMEGA!=0 && Y2%OMEGA==0 ){
         win = new Window** [WNAX+1];
-        for( int i=0 ; i<WNAX+1 ; i++ )
+        for( int i=0 ; i<WNAX+1 ; ++i )
             win[i] = new Window* [WNAY];
     }
     else if( X2%OMEGA==0 && Y2%OMEGA==0 ){
@@ -166,9 +166,9 @@ void Map::CreatWindow(){
     }
     
 
-    for( int i=0 ; i<WNAX ; i++ ){
+    for( int i=0 ; i<WNAX ; ++i ){
         ypin=0;
-        for( int j=0 ; j<WNAY ; j++ ){
+        for( int j=0 ; j<WNAY ; ++j ){
             win[i][j] = new Window ( OMEGA, xpin, ypin );
             ypin=ypin+OMEGA;
         }
@@ -178,7 +178,7 @@ void Map::CreatWindow(){
     if( Y2%OMEGA!=0 ){
         xpin=0;
         ypin=Y2-OMEGA;
-        for( int i=0 ; i<WNAX ; i++ ){
+        for( int i=0 ; i<WNAX ; ++i ){
             win[i][WNAY] = new Window( OMEGA, xpin, ypin );
             xpin=xpin+OMEGA;
         }
@@ -187,7 +187,7 @@ void Map::CreatWindow(){
     if( X2%OMEGA!=0 ){
         xpin=X2-OMEGA;
         ypin=0;
-        for( int j=0 ; j<WNAY ; j++ ){
+        for( int j=0 ; j<WNAY ; ++j ){
             win[WNAX][j] = new Window( OMEGA, xpin, ypin );
             ypin=ypin+OMEGA;
         }
@@ -334,7 +334,7 @@ void Map::linkGW(){
     int p;
     size_t Glength=groups.size();
     
-    for( size_t h=0 ; h<Glength ; h++ ){
+    for( size_t h=0 ; h<Glength ; ++h ){
         m=(groups[h]->x1)/OMEGA;
         n=(groups[h]->y1)/OMEGA;
         //    check where the groups is    //
@@ -354,8 +354,8 @@ void Map::linkGW(){
             if( (groups[h]->y2)>Y2-OMEGA )
                 ++p;
         //    Start linking    //
-        for( size_t i=m ; i<=o ; i++ )
-            for( size_t j=n ; j<=p ; j++ )
+        for( size_t i=m ; i<=o ; ++i )
+            for( size_t j=n ; j<=p ; ++j )
                 if( CheckSharing( groups[h], windows[i][j] ) )
                     windows[i][j]->wgroups.push_back(groups[h]);
     }
@@ -364,7 +364,7 @@ void Map::linkGW(){
 bool Map::CheckSharing( Group* g, Window* w ){
     bool check=false;
     size_t length=g->nodes.size();
-    for( size_t i=0 ; i<length ; i++ ){
+    for( size_t i=0 ; i<length ; ++i ){
         if( g->nodes[i]->x1 > (w->WX)+(OMEGA) ) continue;
         if( g->nodes[i]->y1 > (w->WY)+(OMEGA) ) continue;
         if( g->nodes[i]->x2 < (w->WX) ) continue;
