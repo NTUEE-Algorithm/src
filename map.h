@@ -58,7 +58,7 @@ class Window {
       void setGref();
       int ref;
       static int gref;
-      void print(fstream& output, Map* map);
+      double print(fstream& output, Map* map);
 };
 
 class Map {
@@ -83,7 +83,7 @@ class Map {
       void InitXY();
       void BuildAllColor();
       int  MinMax( vector<int>& v, int& skip );
-      void printFile(fstream& output);
+      double printFile(fstream& output);
 
    private:
       Graph* graph;
