@@ -621,7 +621,6 @@ void Window::print(fstream& output, Map* map)
 {
     double sum1 = 0, sum2 = 0;
     for (size_t i=0; i<color.size(); ++i) {
-       cout << "!"<< color2[i] << endl;
        if (wgroups[i]->rev) {
            sum1 += color2[i];
            sum2 += color1[i];    
@@ -631,7 +630,6 @@ void Window::print(fstream& output, Map* map)
            sum2 += color2[i];    
        }
     }
-    cout << sum1 << " " <<  sum2 << endl;
     output << WX+map->X1 << "," << WY+map->Y1 << "," << WX+OMEGA+map->X1 
            << "," << WY+OMEGA+map->Y1 << "(" << fixed << setprecision(2) << (sum1/OMEGA/OMEGA)*100 
            << " " << fixed << setprecision(2) << (sum2/OMEGA/OMEGA)*100 << ")" << endl;
