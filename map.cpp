@@ -8,6 +8,16 @@
 #include <cmath>
 
 using namespace std;
+
+#define CONST_1 20
+#define CONST_2 7
+#define CONST_3 20
+#define CONST_4 20
+#define CONST_5 7
+#define CONST_6 15
+#define CONST_7 100
+#define CONST_8 20
+
 int Group::gref = 0;
 int Group::gref2 = 0;
 
@@ -203,6 +213,11 @@ void Map::CreatWindow(){
     windows = win;
 }
 
+Map::Map(Graph* g){
+    graph=g;
+    OMEGA=g->omega;
+}
+
 Map::~Map()
 {
     for(size_t i=0; i<groups.size(); ++i) delete groups[i];
@@ -298,10 +313,7 @@ int Map::MinMax( vector<int>& v, int& skip ){
     for( size_t i=1 ; i<pow-1 ; ++i )
         mask[i]=mask[i-1]<<1;
 
-    for( size_t i=0 ; i<pow-2 ; ++i )
-        counter=counter<<1;
-    
-    for( size_t i=0 ; i<counter ; ++i ){
+    for( size_t i=0 ; i<mask[pow-2] ; ++i ){
         sum=0;
         temp=0;
         for( size_t j=0 ; j<pow ; ++j ){
@@ -317,6 +329,7 @@ int Map::MinMax( vector<int>& v, int& skip ){
             MinCompare=sum;
         if(sum>MaxCompare)
             MaxCompare=sum;
+        if(pow>CONST_4&&i%CONST_5==0) i+=mask[pow-CONST_6];
     }
     return MaxCompare-MinCompare;
 }
@@ -411,6 +424,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
                 size_t nmax=w->wgroups.size();
                 for(size_t n=0;n<nmax;++n){
                     if(!w->wgroups[n]->isGref()){
+
                         if(!w->wgroups[n]->isGref2()){
                             gptr.push_back(w->wgroups[n]);
                             w->wgroups[n]->setToGref2();
@@ -460,6 +474,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
             best=m;
             mincolordiff=colordiff;
         }
+        if(max>CONST_1&&m%CONST_2==0)m+=mask[max-CONST_3]; 
     }
 
 //set to the best choice and mark ref
@@ -492,37 +507,33 @@ void Map::gdColor(){
     groups[0]->setGref();
     windows[0][0]->setGref();
 	
-    int maxnum=10;
-    int range=10;
 	 
     size_t n=groups.size();
     
     groups[0]->setToGref();
     Donegroup dg(groups[0]);
-
     for(size_t i=1;i<n;){
        size_t j=i;
 	    size_t jtemp=i;
 	    int maxnumtemp = numeric_limits<int>::max();
 	    bool notexist=true;
     
-	    for(;j<n&&j<i+n/range+1;++j){	
+	    for(;j<n&&j<CONST_7;++j){	
 	        if(!groups[j]->isGref()){
                 notexist=false;
                 int num=numberofGroup(dg, groups[j]);
-                if(num<maxnum) break;
+                if(num<CONST_8) break;
                 else if(num<maxnumtemp){
                     jtemp=j;
                     maxnumtemp=num;
                 }
-                if(j==n-1||j==i+n/range){
-                    j=jtemp;
-                    maxnum=maxnumtemp;
-                    break;
-                }
+            }
+            if(j==n-1||j==(CONST_7)-1){
+                j=jtemp;
+                break;
             }
         }
-        if(notexist) i=(n>i+n/range+1)?i+n/range+1 :n;
+        if(notexist) i=(n>CONST_7)?CONST_7 :n;
         else{
             tryBest(dg, groups[j]);
             dg.update(groups[j]);

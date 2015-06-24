@@ -64,7 +64,7 @@ class Window {
 
 class Map {
    public:
-      Map(Graph* g) { graph = g; OMEGA = graph->omega;}
+      Map(Graph* g);
       ~Map();
       int OMEGA;
       int X1;
