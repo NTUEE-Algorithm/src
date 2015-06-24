@@ -216,38 +216,35 @@ size_t Graph::getNumofNode()
     return nodes.size();	
 }
 
-bool Graph::coloring(Node* h, int* pos)
+bool Graph::coloring(Node* h, int* pos, vector<Node*>& nodes, bool& valid)
 {
-    if(!h->isGref())
-    {
+    if(!h->isGref()){
         h->setToGref();
         h->color = 0;
         pos[0] = h->x1;
         pos[1] = h->y1;
         pos[2] = h->x2;
         pos[3] = h->y2;
+        nodes.push_back(h);
     }
     
     size_t n = h->edge.size();
 
-    for(size_t i = 0;i<n;++i)
-    {
+    for(size_t i = 0;i<n;++i){
         Node* temp = h->edge[i]->getNeighbor(h);
-        if(!temp->isGref())
-        {
+        if(!temp->isGref()){
+            temp->setToGref();
             temp->color = ((h->color)?0:1);
             if(temp->x1<pos[0]) pos[0] = temp->x1;
             if(temp->y1<pos[1]) pos[1] = temp->y1;
             if(temp->x2>pos[2]) pos[2] = temp->x2;
             if(temp->y2>pos[3]) pos[3] = temp->y2;
-            temp->setToGref();
-            if(!coloring(temp,pos)) return false;
-        }else
-        {
-            if(temp->color==h->color) return false;
+            nodes.push_back(temp);
+            coloring(temp,pos,nodes,valid);
+        }else{
+            if(temp->color==h->color) valid=false;
         }
     }
-    return true;
 }
 
 void Graph::markAll(Node* h)
