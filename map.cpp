@@ -108,7 +108,6 @@ void Window::BuildColor(){
                   effy2=wgroups[i]->nodes[j]->y2;
                 
               area=(effx2-effx1)*(effy2-effy1);
-             
               if( wgroups[i]->nodes[j]->color )
                   sum1=sum1+area;
               else
@@ -116,7 +115,7 @@ void Window::BuildColor(){
         }
         color.push_back(sum1-sum2);
         color1.push_back(sum1);
-        color2.push_back(sum2);
+        color2.push_back(sum2); 
     }
 }
 
@@ -333,9 +332,11 @@ void Map::linkGW(){
     int o;
     int p;
     size_t Glength=groups.size();
+    
     for( size_t h=0 ; h<Glength ; h++ ){
         m=(groups[h]->x1)/OMEGA;
         n=(groups[h]->y1)/OMEGA;
+        //    check where the groups is    //
         if( (groups[h]->x2)%OMEGA==0 )
             o=(groups[h]->x2)/OMEGA-1;
         else    
@@ -344,12 +345,18 @@ void Map::linkGW(){
             p=(groups[h]->y2)/OMEGA-1;
         else
             p=(groups[h]->y2)/OMEGA;
-        for( int i=m ; i<=o ; i++ ){
-            for( int j=n ; j<=p ; j++ ){
+        //    check if the last window overlap    //
+        if( o==X2/OMEGA-1 )
+            if( (groups[h]->x2)>X2-OMEGA )
+                ++o;
+        if( p==Y2/OMEGA-1 )
+            if( (groups[h]->y2)>Y2-OMEGA )
+                ++p;
+        //    Start linking    //
+        for( size_t i=m ; i<=o ; i++ )
+            for( size_t j=n ; j<=p ; j++ )
                 if( CheckSharing( groups[h], windows[i][j] ) )
                     windows[i][j]->wgroups.push_back(groups[h]);
-            }
-        }
     }
 }
 
@@ -411,7 +418,6 @@ void Map::tryBest(Donegroup& dg, Group* g){
                             w->wgroups[n]->setToGref2();
                         }
                     }
-                    
                 }
             }
         }
@@ -461,10 +467,10 @@ void Map::tryBest(Donegroup& dg, Group* g){
 //set to the best choice and mark ref
     groups[0]->setGref2();
     for(size_t n=0;n<max;++n){
-        if((best&mask[n-1])>>n) gptr[n]->setToGref2();
+        if(best&mask[n]) gptr[n]->setToGref2();
     }	
     for(size_t n=0;n<max;++n){
-        if(!gptr[n]->isGref2()){
+        if(gptr[n]->isGref2()){
             gptr[n]->reverse();
             gptr[n]->rev=true;   
         }
@@ -550,6 +556,13 @@ void Map::getWindowNumber(Donegroup& dg, Group* g, int* result){
         result[3]=ypin2/OMEGA-1;
     else
         result[3]=ypin2/OMEGA;
+    
+    if( result[2]==X2/OMEGA-1 )
+        if( xpin2>X2-OMEGA )
+            ++result[2];
+    if( result[3]==Y2/OMEGA-1 )
+        if( ypin2>Y2-OMEGA )
+            ++result[3];
 }
 
 void Map::printFile(fstream& output)
