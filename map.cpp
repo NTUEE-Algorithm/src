@@ -473,7 +473,7 @@ void Map::tryBest(Donegroup& dg, Group* g){
         if(best&mask[n]) gptr[n]->setToGref2();
     }	
     for(size_t n=0;n<max;++n){
-        if(gptr[n]->isGref2()){
+        if(!gptr[n]->isGref2()){
             gptr[n]->reverse();
             gptr[n]->rev=true;   
         }
@@ -659,6 +659,7 @@ void Map::optSolver(){
         int colordiff=0;	
         for(int i=0;i<WNAX;++i){
             for(int j=0;j<WNAY;++j){
+                Window* w=windows[i][j];
                 size_t nmax=w->wgroups.size();
                 int wsum=0;
                 for(size_t n=0;n<nmax;++n){
@@ -680,10 +681,10 @@ void Map::optSolver(){
     for(size_t n=0;n<max;++n){
         if(best&mask[n]) groups[n]->setToGref2();
     }	
-    for(size_t n=0;n<max;++n){
-        if(gptr[n]->isGref2()){
-            gptr[n]->reverse();
-            gptr[n]->rev=true;   
+    for(size_t n=0;n<max+1;++n){
+        if(!groups[n]->isGref2()){
+            groups[n]->reverse();
+            groups[n]->rev=true;   
         }
     }
 }
