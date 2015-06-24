@@ -216,8 +216,7 @@ size_t Graph::getNumofNode()
     return nodes.size();	
 }
 
-bool Graph::coloring(Node* h, int* pos, vector<Node*>& nodes, bool& valid)
-{
+void Graph::coloring(Node* h, int* pos, vector<Node*>& nodes, bool& valid){
     if(!h->isGref()){
         h->setToGref();
         h->color = 0;
