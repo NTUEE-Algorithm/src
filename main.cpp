@@ -86,6 +86,7 @@ int main(int argc, char* argv[])
     map.BuildAllColor();
     map.InitEffect();
     map.gdColor();
+    //map.optSolver();
 
     //////////// write the output file ///////////
 
