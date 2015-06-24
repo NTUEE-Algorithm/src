@@ -11,18 +11,22 @@ using namespace std;
 int Group::gref = 0;
 int Group::gref2 = 0;
 
-Group::Group(Node* h, int* pos)
+Group::Group(Node* h)
 {
     head = h;
     effect = 0;
+    ref = gref;
+    ref2 = gref2;
+    rev = false;
+}
+
+void Group::setPos(int* pos)
+{
     x1 = pos[0];
     y1 = pos[1];
     x2 = pos[2];
     y2 = pos[3];
-    ref = gref;
-    ref2 = gref2;
-    rev = false;
-};
+}
 
 bool Group::isGref()
 {
@@ -215,16 +219,14 @@ void Map::makeGroup()
     for(size_t i=0;i<n;++i){
         Node* h = graph->nodes[i];
         if(!h->isGref()){
-            if(graph->coloring(h,pos)){
-                Group* temp = new Group(h,pos);
-                groups.push_back(temp);
-                graph->setGroup(h, temp);
-            }else{
-     //           graph->markAll(h);
-                Group* temp = new Group(h,pos);
-                ngroups.push_back(temp);
-                graph->setGroup(h, temp);
-            }
+            bool valid=true;
+            int pos[4];
+            Group* temp=new Group(h);
+            graph->coloring(h,pos,temp->nodes,valid);
+            temp->setPos(pos);
+            
+            if(valid) groups.push_back(temp);
+            else ngroups.push_back(temp);
         }
     }
 }
