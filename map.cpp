@@ -140,7 +140,6 @@ void Window::setGref()
 }
 
 void Map::CreatWindow(){
-    OMEGA = graph->omega;
     int WNAX_2   = X2/OMEGA;   //  window numbers along x without the last one
     int WNAY_2   = Y2/OMEGA;   //  window numbers along y without the last one
     int xpin   = 0;
@@ -265,7 +264,6 @@ void Map::InitXY(){
     if( (Y2)%OMEGA!=0 ) ++WNAY;
 }
 void Map::BuildAllColor(){
-    OMEGA = graph->omega;       //  can be delete if OMEGA is already set
     for( int i=0 ; i<WNAX ; ++i ){
         for( int j=0 ; j<WNAY ; ++j ){
             windows[i][j]->BuildColor();        
@@ -274,7 +272,6 @@ void Map::BuildAllColor(){
 }
 
 void Map::InitEffect(){
-    OMEGA = graph->omega;       //  can be delete if OMEGA is already set
     for( int i=0 ; i<WNAX ; ++i ){
         for( int j=0 ; j<WNAY ; ++j ){
             size_t ColorLength=windows[i][j]->color.size();
