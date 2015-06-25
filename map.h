@@ -90,6 +90,7 @@ class Map {
       int  MinMax( vector<int>& v, int& skip );
       double printFile(fstream& output);
       void optSolver();
+      void justColor();
 
    private:
       Graph* graph;
