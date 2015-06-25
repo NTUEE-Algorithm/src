@@ -76,6 +76,9 @@ void Group::reverse(){
         if(nodes[i]->color==0)nodes[i]->color=1;
 	else nodes[i]->color=0;
     }
+    int temp=color1;
+    color1=color2;
+    color2=temp;
 }
 
 int Window::gref = 0;
@@ -694,4 +697,34 @@ void Map::optSolver(){
             groups[n]->rev=true;   
         }
     }
+}
+
+void Map::justColor(){
+    sortByeffect();
+    int state=0; //color1-color2
+    size_t n=groups.size();
+    for(size_t i=0;i<n;++i){
+        if(state<0){
+            if(groups[i]->color1>groups[i]->color2){
+                state+=groups[i]->color1;
+                state-=groups[i]->color2;
+            }else{
+                gptr[n]->reverse();
+                gptr[n]->rev=true;
+                state+=groups[i]->color1;
+                state-=groups[i]->color2;
+            }
+        }
+        else{
+            if(groups[i]->color1<groups[i]->color2){
+                state+=groups[i]->color1;
+                state-=groups[i]->color2;
+            }else{
+                gptr[n]->reverse();
+                gptr[n]->rev=true;
+                state+=groups[i]->color1;
+                state-=groups[i]->color2;
+            }		
+        } 
+	}
 }
