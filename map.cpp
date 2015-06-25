@@ -23,11 +23,13 @@ int Group::gref2 = 0;
 
 Group::Group(Node* h)
 {
-    head = h;
-    effect = 0;
-    ref = gref;
-    ref2 = gref2;
-    rev = false;
+    head=h;
+    effect=0;
+    ref=gref;
+    ref2=gref2;
+    rev=false;
+    color1=0;
+    color2=0;
 }
 
 void Group::setPos(int* pos)
@@ -130,7 +132,9 @@ void Window::BuildColor(){
         }
         color.push_back(sum1-sum2);
         color1.push_back(sum1);
-        color2.push_back(sum2); 
+        color2.push_back(sum2);
+        wgroups[i]->color1+=sum1;
+        wgroups[i]->color1+=sum2;
     }
 }
 
