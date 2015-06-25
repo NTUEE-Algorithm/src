@@ -85,6 +85,8 @@ int main(int argc, char* argv[])
     map.linkGW();
     map.BuildAllColor();
     map.InitEffect();
+ //   map.justColor();
+ //   map.reset();
     map.gdColor();
     //map.optSolver();
 

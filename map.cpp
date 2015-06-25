@@ -11,7 +11,7 @@ using namespace std;
 
 #define CONST_1 20
 #define CONST_2 7
-#define CONST_3 20
+#define CONST_3 15
 #define CONST_4 20
 #define CONST_5 7
 #define CONST_6 15
@@ -649,7 +649,7 @@ double Window::print(fstream& output, Map* map)
     output << WX+map->X1 << "," << WY+map->Y1 << "," << WX+OMEGA+map->X1 
            << "," << WY+OMEGA+map->Y1 << "(" << fixed << setprecision(2) << sum1 
            << " " << fixed << setprecision(2) << sum2 << ")" << endl;
-    return abs(sum1-sum2);
+    return abs(sum1-sum2)/5;
 }
 
 void Map::optSolver(){
@@ -709,8 +709,8 @@ void Map::justColor(){
                 state+=groups[i]->color1;
                 state-=groups[i]->color2;
             }else{
-                gptr[n]->reverse();
-                gptr[n]->rev=true;
+                groups[i]->reverse();
+                groups[i]->rev=true;
                 state+=groups[i]->color1;
                 state-=groups[i]->color2;
             }
@@ -720,8 +720,8 @@ void Map::justColor(){
                 state+=groups[i]->color1;
                 state-=groups[i]->color2;
             }else{
-                gptr[n]->reverse();
-                gptr[n]->rev=true;
+                groups[i]->reverse();
+                groups[i]->rev=true;
                 state+=groups[i]->color1;
                 state-=groups[i]->color2;
             }		
@@ -732,9 +732,9 @@ void Map::justColor(){
 void Map::reset(){
     size_t n=groups.size();
     for(size_t i=0;i<n;++i){
-        if(gptr[n]->rev){
-            gptr[n]->reverse();
-            gptr[n]->rev=false;
+        if(groups[i]->rev){
+            groups[i]->reverse();
+            groups[i]->rev=false;
         }
 	}
 }
