@@ -37,6 +37,8 @@ class Group {
       int y2;
       int ref;
       int ref2;
+      int color1;
+      int color2;
       static int gref;
       static int gref2;
       
