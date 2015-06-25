@@ -17,6 +17,9 @@ using namespace std;
 #define CONST_6 15
 #define CONST_7 100
 #define CONST_8 20
+#define CONST_9 20
+#define CONST_10 7
+#define CONST_11 15
 
 int Group::gref = 0;
 int Group::gref2 = 0;
@@ -737,4 +740,52 @@ void Map::reset(){
             groups[i]->rev=false;
         }
 	}
+}
+
+void Map::rdSolver(){
+    size_t max=groups.size()-1;
+    size_t mask[max+1];
+    mask[0]=1;
+    for(size_t n=1;n<max+1;++n){
+        mask[n]=mask[n-1]<<1;
+    }
+    size_t best;
+    int mincolordiff=numeric_limits<int>::max();
+ 
+    for(size_t m=0;m<mask[max];++m){       
+        groups[0]->setGref2();
+        for(size_t n=0;n<max;++n) if(m&mask[n]) groups[n]->setToGref2();
+
+        int colordiff=0;	
+        for(int i=0;i<WNAX;++i){
+            for(int j=0;j<WNAY;++j){
+                Window* w=windows[i][j];
+                size_t nmax=w->wgroups.size();
+                int wsum=0;
+                for(size_t n=0;n<nmax;++n){
+                    if(w->wgroups[n]->isGref2()) wsum+=w->color[n];
+                    else wsum-=w->color[n];    
+                }
+                if(wsum<0)wsum=-wsum;
+                colordiff+=wsum;
+            }
+        }
+        if(colordiff<mincolordiff){
+            best=m;
+            mincolordiff=colordiff;
+        }
+        if(max>CONST_9&&m%CONST_10==0)m+=mask[max-CONST_11];
+    }
+
+//set to the best choice
+    groups[0]->setGref2();
+    for(size_t n=0;n<max;++n){
+        if(best&mask[n]) groups[n]->setToGref2();
+    }	
+    for(size_t n=0;n<max+1;++n){
+        if(!groups[n]->isGref2()){
+            groups[n]->reverse();
+            groups[n]->rev=true;   
+        }
+    }
 }
