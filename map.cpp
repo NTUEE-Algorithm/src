@@ -522,7 +522,7 @@ void Map::gdColor(){
 	    int maxnumtemp = numeric_limits<int>::max();
 	    bool notexist=true;
     
-	    for(;j<n&&j<CONST_7;++j){	
+	    for(;j<n&&j<i+CONST_7;++j){	
 	        if(!groups[j]->isGref()){
                 notexist=false;
                 int num=numberofGroup(dg, groups[j]);
@@ -532,12 +532,12 @@ void Map::gdColor(){
                     maxnumtemp=num;
                 }
             }
-            if(j==n-1||j==(CONST_7)-1){
+            if(j==n-1||j==i+CONST_7-1){
                 j=jtemp;
                 break;
             }
         }
-        if(notexist) i=(n>CONST_7)?CONST_7 :n;
+        if(notexist) i=(n>i+CONST_7)?i+CONST_7 :n;
         else{
             tryBest(dg, groups[j]);
             dg.update(groups[j]);
