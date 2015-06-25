@@ -728,3 +728,13 @@ void Map::justColor(){
         } 
 	}
 }
+
+void Map::reset(){
+    size_t n=groups.size();
+    for(size_t i=0;i<n;++i){
+        if(gptr[n]->rev){
+            gptr[n]->reverse();
+            gptr[n]->rev=false;
+        }
+	}
+}
