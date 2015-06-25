@@ -91,6 +91,7 @@ class Map {
       double printFile(fstream& output);
       void optSolver();
       void justColor();
+      void rdSolver();
       void reset();
 
    private:
