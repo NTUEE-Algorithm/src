@@ -19,6 +19,36 @@ void help_message() {
     cout << "usage: DPT_balance_color ($input_file_name) ($input_file_name).out" << endl;
 }
 
+double useSimpleSolver(Map& map)
+{
+    double score;
+    fstream output;
+    map.justColor();
+    score = map.printFile(output);
+    map.reset();
+    return score;
+}
+
+double useComplexSolver(Map& map)
+{
+    double score;
+    fstream output;
+    map.gdColor();
+    score = map.printFile(output);
+    map.reset();
+    return score;
+}
+
+double useRDSolver(Map& map)
+{
+    double score;
+    fstream output;
+    map.rdSolver();
+    score = map.printFile(output);
+    map.reset();
+    return score;
+}
+
 int main(int argc, char* argv[])
 {
     if(argc != 3) {
@@ -85,30 +115,32 @@ int main(int argc, char* argv[])
     map.linkGW();
     map.BuildAllColor();
     map.InitEffect();
- //   map.justColor();
- //   map.reset();
-    map.gdColor();
+    
+    // choose solver
+    
+    double score1, score2, score3;
+    score1 = useSimpleSolver(map);
+    score2 = useComplexSolver(map);
+    //score3 = useRDSolver(map);
+    
+    if (score1 > score2)
+        map.justColor();
+    else
+        map.gdColor();
+    
+    //cout << score1 << " " << score2 << " " << score3 << endl;
     //map.optSolver();
 
     //////////// write the output file ///////////
 
-        
+    
     fstream output;
     output.open(argv[2], ios::out);
     if (!output) {
         cout << "Error: File is not open!!" << endl;
         return 0;
     }
-    double score = map.printFile(output);
-    cout << score << endl;
-/*    
-    output << "// used for debugging graph" << endl 
-           << "graph {" << endl;   
-    for (size_t i=0; i<graph.edges.size(); ++i)
-        output << "v" << graph.edges[i]->node[0]->id << " -- v" 
-               << graph.edges[i]->node[1]->id << ";" << endl;
-    output << "}";
-*/
+    map.printFile(output);
     output.close();
     return 0;
 }
