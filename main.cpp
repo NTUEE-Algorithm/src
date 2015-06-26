@@ -19,36 +19,6 @@ void help_message() {
     cout << "usage: DPT_balance_color ($input_file_name) ($input_file_name).out" << endl;
 }
 
-double useSimpleSolver(Map& map)
-{
-    double score;
-    fstream output;
-    map.justColor();
-    score = map.printFile(output);
-    map.reset();
-    return score;
-}
-
-double useComplexSolver(Map& map)
-{
-    double score;
-    fstream output;
-    map.gdColor();
-    score = map.printFile(output);
-    map.reset();
-    return score;
-}
-
-double useRDSolver(Map& map)
-{
-    double score;
-    fstream output;
-    map.rdSolver();
-    score = map.printFile(output);
-    map.reset();
-    return score;
-}
-
 int main(int argc, char* argv[])
 {
     if(argc != 3) {
@@ -117,30 +87,22 @@ int main(int argc, char* argv[])
     map.InitEffect();
     
     // choose solver
-    
-    double score1, score2, score3;
-    score1 = useSimpleSolver(map);
-    score2 = useComplexSolver(map);
-    //score3 = useRDSolver(map);
-    
-    if (score1 > score2)
-        map.justColor();
-    else
-        map.gdColor();
-    
-    //cout << score1 << " " << score2 << " " << score3 << endl;
-    //map.optSolver();
-
-    //////////// write the output file ///////////
-
-    
-    fstream output;
+	    // output
+    fstream output, dummy;
     output.open(argv[2], ios::out);
     if (!output) {
         cout << "Error: File is not open!!" << endl;
         return 0;
     }
-    map.printFile(output);
+    double score1, score2;
+	 map.gdColor();
+    score1 = map.printFile(output);
+	 map.reset();
+	 map.justColor();
+    score2 = map.printFile(dummy);
+    if (score1 < score2)
+        map.printFile(output);
+
     output.close();
     return 0;
 }
