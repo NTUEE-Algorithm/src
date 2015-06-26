@@ -95,14 +95,17 @@ int main(int argc, char* argv[])
         return 0;
     }
     double score1, score2;
-	 map.gdColor();
+    map.effectSolver();
+    score1 = map.printFile(output);
+    cout<<score1<<endl;
+/*	 map.gdColor();
     score1 = map.printFile(output);
 	 map.reset();
 	 map.justColor();
     score2 = map.printFile(dummy);
     if (score1 < score2)
         map.printFile(output);
-
+*/
     output.close();
     return 0;
 }
