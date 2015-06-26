@@ -93,6 +93,7 @@ class Map {
       void justColor();
       void rdSolver();
       void reset();
+      void effectSolver();
 
    private:
       Graph* graph;
