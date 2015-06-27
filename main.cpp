@@ -11,6 +11,7 @@
 #include <limits> 
 #include "graph.h"
 #include "map.h"
+#include "../lib/tm_usage.h"
 
 using namespace std;
 size_t myStrGetTok(const string&, string&, size_t = 0, const char = ',');
@@ -21,6 +22,9 @@ void help_message() {
 
 int main(int argc, char* argv[])
 {
+    CommonNs::TmUsage tmusg;
+    CommonNs::TmStat stat;
+    
     if(argc != 3) {
         help_message();
         return 0;
@@ -77,7 +81,6 @@ int main(int argc, char* argv[])
     graph.addEdgesInX();
     
     //////////// find the solution ////
-    
     Map map(&graph);
     map.makeGroup();   // make group and color    
     map.InitXY();
@@ -94,17 +97,34 @@ int main(int argc, char* argv[])
         cout << "Error: File is not open!!" << endl;
         return 0;
     }
-    double score1, score2;
+    double score, score1, score2, score3;
+    map.justColor();
+    score1 = map.printFile(output);
+    map.reset();
+    map.gdColor();
+    score2 = map.printFile(output);  
+    map.reset();	 
     map.effectSolver();
-    score1 = map.printFile(output);
-    cout<<score1<<endl;
-/*	 map.gdColor();
-    score1 = map.printFile(output);
-	 map.reset();
-	 map.justColor();
-    score2 = map.printFile(dummy);
-    if (score1 < score2)
+    score3 = map.printFile(output);
+    map.reset();
+
+    score = score1;
+    if (score2 > score)
+        score = score2;
+    if (score3 > score)
+        score = score3;
+    if (score == score1) {
+        map.justColor();
         map.printFile(output);
+    }
+    else if (score == score2) {
+        map.gdColor();
+        map.printFile(output);        
+    }
+/*
+    tmusg.getPeriodUsage(stat);
+    cout <<"# run time = " << (stat.uTime + stat.sTime) / 1000000.0 << "sec" << endl;
+    cout <<"# memory =" << stat.vmPeak / 1000.0 << "MB" << endl;
 */
     output.close();
     return 0;
