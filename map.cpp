@@ -13,8 +13,8 @@ using namespace std;
 #define CONST_2 7
 #define CONST_3 15
 #define CONST_4 20
-#define CONST_5 93
-#define CONST_6 1
+#define CONST_5 7
+#define CONST_6 15
 #define CONST_7 100
 #define CONST_8 20
 #define CONST_9 20
@@ -598,7 +598,7 @@ double Map::printFile(fstream& output)
     else
         yNum = Y2/OMEGA + 1;    
     int count = 1;
-    double score = 100;
+    double score = 70;
     for (int i=0; i<yNum; ++i) 
         for (int j=0; j<xNum; ++j) {
             output << "WIN[" << count << "]=";
@@ -632,7 +632,9 @@ double Map::printFile(fstream& output)
                    << CB[j]->x1+X1 << "," << CB[j]->y1+Y1 << "," 
                    << CB[j]->x2+X1 << "," << CB[j]->y2+Y1 << endl;                   
     }
-    return (score>0? score:0);
+    score = (score>0? score:0);
+    score += 30; 
+    return score;
 }
 
 double Window::print(fstream& output, Map* map)
